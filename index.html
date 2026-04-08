@@ -1,0 +1,3021 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Uči se slovenščine</title>
+
+<!-- ── PWA ── -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Slovenščina">
+<meta name="theme-color" content="#1a5c2e">
+<meta name="description" content="Apprenez le slovène : prononciation, vocabulaire et phrases">
+<link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjogIlVcdTAxMTEgc2Ugc2xvdmVuXHUwMUU1Y2ludSIsICJzaG9ydF9uYW1lIjogIlNsb3ZlbnNcdTAxRTVcdTAxRjludWEiLCAiZGVzY3JpcHRpb24iOiAiQXBwcmVuZXogbGUgc2xvdsOobmUgOiBwcm9ub25jaWF0aW9uLCB2b2NhYnVsYWlyZSBldCBwaHJhc2VzIiwgInN0YXJ0X3VybCI6ICIuIiwgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsICJiYWNrZ3JvdW5kX2NvbG9yIjogIiMxYTVjMmUiLCAidGhlbWVfY29sb3IiOiAiIzFhNWMyZSIsICJvcmllbnRhdGlvbiI6ICJwb3J0cmFpdCIsICJpY29ucyI6IFtdfQ==">
+<link rel="apple-touch-icon" href="icon-sl-192.png">
+
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+/* ── MODE APPRENDRE ── */
+.learn-mini-btn{margin-top:4px;background:linear-gradient(135deg,rgba(82,190,128,.22),rgba(26,188,156,.18));border:1px solid rgba(82,190,128,.45);border-radius:8px;color:var(--aurora-green);font-size:9px;font-weight:700;padding:3px 6px;cursor:pointer;font-family:inherit;transition:all .15s;width:calc(100% - 2px);letter-spacing:.3px}
+.learn-mini-btn:hover{background:rgba(82,190,128,.35);transform:scale(1.03)}
+
+.learn-dir-screen{display:flex;flex-direction:column;align-items:center;padding:1rem .5rem;gap:14px}
+.learn-dir-screen h2{font-size:clamp(15px,4vw,20px);font-weight:900;color:var(--snow);text-align:center}
+.learn-dir-screen p{font-size:12px;color:var(--text-muted);text-align:center}
+.learn-dir-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:340px}
+.learn-dir-card{background:rgba(26,188,156,.12);border:2px solid rgba(46,204,113,.3);border-radius:14px;padding:16px 10px;cursor:pointer;text-align:center;transition:all .15s;display:flex;flex-direction:column;align-items:center;gap:6px}
+.learn-dir-card:hover{border-color:var(--aurora-green);background:rgba(82,190,128,.15);transform:translateY(-2px)}
+.learn-dir-card-icon{font-size:32px}
+.learn-dir-card h3{font-size:13px;font-weight:700;color:var(--snow)}
+.learn-dir-card p{font-size:10px;color:var(--text-muted);line-height:1.4}
+
+#learnScreen{overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:12px}
+.learn-screen-header{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-shrink:0}
+.learn-screen-header h2{font-size:clamp(14px,4vw,18px);font-weight:900;color:var(--snow);flex:1}
+.learn-dir-lbl{font-size:10px;color:var(--text-muted);margin-bottom:8px;text-align:center;font-style:italic;flex-shrink:0}
+
+.learn-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+@media(min-width:380px){.learn-grid{grid-template-columns:repeat(2,1fr)}}
+
+.learn-card{background:linear-gradient(135deg,rgba(26,82,118,.55),rgba(13,33,55,.75));border:1.5px solid rgba(46,134,193,.3);border-radius:12px;padding:10px 8px 8px;cursor:pointer;text-align:center;transition:all .15s;position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;min-height:80px;user-select:none}
+.learn-card:hover{border-color:var(--aurora-green);background:linear-gradient(135deg,rgba(82,190,128,.15),rgba(26,188,156,.1));transform:translateY(-1px)}
+.learn-card.learn-card-revealed{border-color:var(--aurora-green);box-shadow:0 0 12px rgba(82,190,128,.2)}
+.learn-card-emoji{font-size:22px;line-height:1;flex-shrink:0}
+.learn-card-main{font-size:clamp(12px,3.5vw,15px);font-weight:700;color:var(--snow);line-height:1.2;word-break:break-word}
+.learn-card-reveal{font-size:clamp(11px,3vw,13px);font-weight:600;color:var(--aurora-green);min-height:16px;line-height:1.2;word-break:break-word;pointer-events:none}
+.learn-speak-btn{background:none;border:none;font-size:14px;cursor:pointer;opacity:.6;padding:2px;line-height:1;margin-top:auto;transition:opacity .15s}
+.learn-speak-btn:hover{opacity:1}
+:root{
+  --green-deep:#0d2137;--green-mid:#1a6a3c;--green-light:#2ecc71;
+  --green-pale:#d5f5e3;--green-bg:rgba(20,80,50,.9);
+  --aurora-green:#52be80;--aurora-teal:#1abc9c;--aurora-purple:#8e44ad;
+  --lake-blue:#1a7fa3;--lake-deep:#0d3b52;
+  --snow:#f0f4f8;--snow-white:#ffffff;
+  --green-forest:#1e6a3a;--green-light2:#27ae60;
+  --green-ok:#1e6a3a;--green-bg:#d5f5e3;
+  --red-err:#922b21;--red-bg:#fadbd8;
+  --text-dark:#0d2137;--text-muted:#5d8aa8;
+  --gold:#f1c40f;--gold-light:#f9e79f;
+}
+html{height:100%;overflow:hidden}
+body{height:100dvh;overflow:hidden;background:#1a4a2e;display:flex;align-items:flex-start;justify-content:center;padding:0;position:relative;font-family:'Nunito','Segoe UI',sans-serif}
+
+/* Neige qui tombe */
+#snowflakes{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden}
+.snowflake{position:absolute;top:-20px;opacity:0;animation:snowFall linear infinite;color:#ffffff;font-size:12px;user-select:none}
+@keyframes snowFall{0%{transform:translateY(0) rotate(0deg) translateX(0);opacity:0}8%{opacity:.7}80%{opacity:.4}100%{transform:translateY(105vh) rotate(360deg) translateX(40px);opacity:0}}
+
+/* Aurores boréales en fond */
+.aurora{position:fixed;top:0;left:0;width:100%;height:50%;pointer-events:none;z-index:0;opacity:.5}
+
+.game{position:relative;z-index:1;max-width:500px;width:100%;background:rgba(8,22,40,.65);border-radius:0;height:100dvh;max-height:100dvh;overflow:hidden;padding:max(env(safe-area-inset-top),8px) 10px 0;display:flex;flex-direction:column;box-shadow:0 8px 40px rgba(0,0,0,.5);border:1px solid rgba(46,134,193,.15);opacity:0;transition:opacity 1s ease}
+.game>*{position:relative;z-index:1}
+
+@media(min-width:520px){
+  body{padding:1rem;align-items:center}
+  .game{height:auto;min-height:auto;max-height:calc(100dvh - 2rem);overflow-y:auto;border-radius:20px;padding:1rem 1rem 0}
+}
+
+/* Paysage intégré dans le menu (Slovénie: Triglav + Lac Bled) */
+.menu-landscape{flex-shrink:0;width:calc(100% + 20px);margin-left:-10px;margin-right:-10px;margin-bottom:0;height:220px;overflow:hidden;position:relative;margin-top:auto}
+.menu-landscape svg{width:100%;height:100%;display:block}
+@media(min-width:520px){.menu-landscape{width:calc(100% + 2rem);margin-left:-1rem;margin-right:-1rem;border-radius:0 0 20px 20px}}
+
+.screen{display:none}
+.screen.active{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden}
+#quizScreen,#resultsScreen,#dirScreen,#reconstructScreen,#reconstructDirScreen,#defiScreen,#defiResultScreen{overflow-y:auto;-webkit-overflow-scrolling:touch}
+
+.sound-toggle{position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:20px;cursor:pointer;opacity:.6;z-index:2;padding:2px;color:#fff}
+.sound-toggle:hover{opacity:1}
+
+/* ── MENU ── */
+#menuScreen.active{overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;padding-bottom:16px}
+@media(max-height:699px){#menuScreen{overflow-y:auto;-webkit-overflow-scrolling:touch}}
+
+.game-title{flex-shrink:0;text-align:center;margin-bottom:0;padding-bottom:0;padding-top:2px}
+.game-title svg{display:none}
+.game-title h1{font-size:clamp(14px,3.5vw,18px);font-weight:900;color:var(--snow);letter-spacing:.5px;text-shadow:0 0 20px rgba(82,190,128,.4)}
+.game-title p{font-size:clamp(9px,2.2vw,11px);color:var(--text-muted);margin-top:1px}
+.game-title::after{content:'';display:block;width:50px;height:2px;background:linear-gradient(90deg,transparent,var(--aurora-green),transparent);margin:.3rem auto 0;border-radius:1px}
+
+.streak-banner{flex-shrink:0;display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,rgba(82,190,128,.15),rgba(26,188,156,.1));border:1px solid rgba(82,190,128,.3);border-radius:10px;padding:4px 10px;margin-top:4px;font-size:11px;color:var(--aurora-green);font-weight:700;animation:fadeIn .4s ease}
+.streak-banner.hidden{display:none}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+
+.global-progress{flex-shrink:0;margin-top:4px;margin-bottom:0}
+.global-progress-label{font-size:9px;color:var(--text-muted);display:flex;justify-content:space-between;margin-bottom:3px}
+.global-bar{height:4px;background:rgba(255,255,255,.1);border-radius:3px}
+.global-fill{height:100%;background:linear-gradient(90deg,var(--aurora-green),var(--aurora-teal));border-radius:3px;transition:width .6s ease}
+
+.mode-grid{flex-shrink:0;margin-top:5px;margin-bottom:0;display:grid;grid-template-columns:1fr 1fr;gap:4px;align-content:start}
+.mode-card{background:rgba(26,188,156,.12);border:1.5px solid rgba(46,204,113,.3);border-radius:9px;padding:7px 8px;cursor:pointer;text-align:center;transition:all .15s;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:0}
+.mode-card:hover{border-color:var(--green-light);background:rgba(46,134,193,.25);transform:translateY(-1px);box-shadow:0 3px 12px rgba(82,190,128,.15)}
+.mode-card.draw-card{grid-column:1/-1;flex-direction:row;align-items:center;gap:10px;text-align:left;border-color:rgba(82,190,128,.3);background:rgba(26,188,156,.08);padding:0 12px}
+.mode-card.draw-card:hover{background:rgba(82,190,128,.15)}
+.mode-jp{font-size:clamp(16px,4vw,22px);display:block;margin-bottom:1px;line-height:1}
+.draw-card .mode-jp{margin-bottom:0;font-size:clamp(20px,5vw,26px)}
+.mode-card h3{font-size:clamp(10px,2.5vw,13px);font-weight:700;color:var(--snow);line-height:1.2}
+.mode-card p{font-size:clamp(8px,2vw,10px);color:var(--text-muted);margin-top:1px;line-height:1.2}
+.mastery-badge{position:absolute;top:4px;right:4px;font-size:8px;font-weight:700;padding:1px 4px;border-radius:8px;background:rgba(82,190,128,.15);color:var(--aurora-green);border:1px solid rgba(82,190,128,.3)}
+
+/* Défi card */
+.defi-card{grid-column:1/-1;background:linear-gradient(135deg,#0d3b1a,#1a6a3c);border:1.5px solid rgba(82,190,128,.4)!important;border-radius:9px;padding:6px 10px;cursor:pointer;text-align:left;display:flex;align-items:center;gap:8px;position:relative;overflow:hidden;transition:all .15s;box-shadow:0 3px 14px rgba(0,0,0,.3)}
+.defi-card:hover{transform:translateY(-1px);box-shadow:0 6px 22px rgba(82,190,128,.2)}
+.defi-card .mode-jp{font-size:clamp(18px,4.5vw,24px);flex-shrink:0;margin-bottom:0}
+.defi-card h3{font-size:clamp(11px,3vw,13px);font-weight:700;color:var(--snow)}
+.defi-card p{font-size:clamp(8px,2vw,10px);color:rgba(180,240,210,.8);margin-top:1px}
+.defi-card .defi-shine{position:absolute;top:0;right:0;width:120px;height:100%;background:linear-gradient(135deg,transparent,rgba(82,190,128,.06));pointer-events:none}
+.defi-done-badge{position:absolute;top:5px;right:5px;background:rgba(30,106,58,.85);color:#fff;font-size:8px;font-weight:700;padding:1px 6px;border-radius:8px;border:1px solid rgba(82,190,128,.5)}
+.defi-streak-badge{position:absolute;bottom:5px;right:6px;font-size:9px;font-weight:700;color:var(--gold);text-shadow:0 1px 2px rgba(0,0,0,.4)}
+
+/* ── DIRECTION PICKER ── */
+.dir-screen{text-align:center}
+.dir-title{font-size:clamp(13px,4vw,16px);font-weight:700;color:var(--snow);margin-bottom:.3rem}
+.dir-subtitle{font-size:clamp(10px,2.5vw,12px);color:var(--text-muted);margin-bottom:clamp(8px,2vh,16px)}
+.dir-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(6px,2vw,12px);margin-bottom:clamp(6px,1.5vh,12px)}
+.dir-card{background:rgba(26,188,156,.12);border:2px solid rgba(46,204,113,.25);border-radius:14px;padding:clamp(10px,2.5vh,18px) clamp(8px,2vw,12px);cursor:pointer;transition:all .15s;position:relative;overflow:hidden}
+.dir-card:hover{border-color:var(--aurora-green);background:rgba(82,190,128,.1);transform:translateY(-2px)}
+.dir-card.selected{border-color:var(--aurora-green);background:rgba(82,190,128,.15)}
+.dir-card-icon{font-size:clamp(22px,6vw,34px);display:block;margin-bottom:clamp(2px,.5vh,6px)}
+.dir-card h3{font-size:clamp(11px,3vw,13px);font-weight:700;color:var(--snow);margin-bottom:4px}
+.dir-card p{font-size:clamp(9px,2.5vw,11px);color:var(--text-muted);line-height:1.4}
+.dir-card-badge{position:absolute;top:8px;right:8px;font-size:16px}
+.dir-random{grid-column:1/-1;display:flex;align-items:center;gap:.8rem;text-align:left;padding:.9rem 1rem}
+.dir-random .dir-card-icon{font-size:26px;margin:0;flex-shrink:0}
+
+/* ── QUIZ HEADER ── */
+.quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:clamp(4px,1vh,10px);gap:6px;flex-shrink:0}
+.quiz-mode-lbl{font-size:clamp(11px,3vw,13px);color:var(--text-muted);font-weight:600}
+.lives{display:flex;gap:3px;font-size:clamp(14px,4vw,16px)}
+.score-lbl{font-size:clamp(12px,3vw,13px);font-weight:700;color:var(--aurora-green)}
+.streak-display{display:flex;align-items:center;gap:3px;font-size:12px;font-weight:700;color:var(--gold);display:none}
+.streak-display.fire{animation:streakPop .4s cubic-bezier(.36,.07,.19,.97)}
+@keyframes streakPop{0%{transform:scale(1)}40%{transform:scale(1.4)}70%{transform:scale(.9)}100%{transform:scale(1)}}
+.progress-bar{height:5px;background:rgba(255,255,255,.1);border-radius:3px;margin-bottom:clamp(6px,1.5vh,14px);overflow:hidden;flex-shrink:0}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--aurora-green),var(--aurora-teal));border-radius:3px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+
+/* ── CARTE QUESTION ── */
+.char-card-wrap{perspective:800px;margin-bottom:clamp(6px,1.5vh,12px);flex-shrink:0}
+.char-card{background:linear-gradient(135deg,rgba(26,82,118,.5),rgba(13,33,55,.7));border:1.5px solid rgba(46,134,193,.3);border-radius:16px;padding:clamp(8px,2vh,20px) clamp(10px,3vw,20px) clamp(6px,1.5vh,14px);text-align:center;position:relative}
+.main-char{font-size:clamp(20px,6vw,28px)!important;line-height:1.15;color:var(--snow);display:block;transition:transform .2s;pointer-events:none;user-select:none;font-weight:900;word-break:break-word;overflow-wrap:break-word;width:100%;}
+.speak-btn{background:rgba(82,190,128,.15);border:1px solid rgba(82,190,128,.35);border-radius:20px;padding:4px 10px;font-size:12px;color:var(--aurora-green);cursor:pointer;font-family:inherit;transition:all .15s;display:inline-block;margin:0 auto}
+.speak-btn:hover{background:rgba(82,190,128,.3)}
+
+/* ── OPTIONS ── */
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(5px,1.5vw,8px);margin-bottom:clamp(4px,1vh,10px);flex-shrink:0}
+.opt{background:linear-gradient(135deg,rgba(26,82,118,.7),rgba(20,60,100,.9));border:1.5px solid rgba(46,134,193,.4);border-radius:10px;padding:clamp(8px,2vh,13px) clamp(6px,2vw,10px);cursor:pointer;font-size:clamp(13px,3.5vw,16px);font-weight:700;color:var(--snow);transition:all .12s;text-align:center;font-family:inherit}
+.opt:hover:not(:disabled){background:linear-gradient(135deg,rgba(82,190,128,.2),rgba(26,188,156,.15));border-color:var(--aurora-green);transform:translateY(-1px)}
+.opt.correct{background:var(--green-bg);border-color:#27ae60;color:#1e6a3a;animation:correctPop .35s cubic-bezier(.36,.07,.19,.97)}
+@keyframes correctPop{0%{transform:scale(1)}40%{transform:scale(1.07)}100%{transform:scale(1)}}
+.opt.wrong{background:var(--red-bg);border-color:#c0392b;color:#922b21;animation:shake .3s}
+@keyframes shake{0%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}100%{transform:translateX(0)}}
+.opt:disabled{cursor:default}
+.feedback{text-align:center;font-size:clamp(11px,3vw,13px);font-weight:600;min-height:16px;margin-bottom:clamp(3px,1vh,8px);flex-shrink:0}
+.feedback.good{color:var(--aurora-green)}.feedback.bad{color:#e74c3c}.feedback.info{color:var(--text-muted)}
+
+/* ── COMBO ── */
+.combo-flash{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.5);font-size:32px;font-weight:900;color:var(--aurora-green);pointer-events:none;z-index:100;opacity:0;text-shadow:0 2px 12px rgba(82,190,128,.5)}
+.combo-flash.show{animation:comboAnim .7s cubic-bezier(.36,.07,.19,.97) forwards}
+@keyframes comboAnim{0%{transform:translate(-50%,-50%) scale(.5);opacity:0}30%{transform:translate(-50%,-50%) scale(1.2);opacity:1}70%{transform:translate(-50%,-50%) scale(1.1);opacity:.9}100%{transform:translate(-50%,-70%) scale(.8);opacity:0}}
+
+/* ── BOUTONS ── */
+.next-btn{display:none;width:100%;padding:clamp(8px,2vh,12px);background:linear-gradient(135deg,var(--green-mid),#0d3b1a);color:var(--snow);border:1px solid rgba(82,190,128,.3);border-radius:10px;font-size:clamp(12px,3.5vw,14px);font-weight:700;cursor:pointer;margin-top:4px;font-family:inherit;transition:all .15s}
+.next-btn:hover{opacity:.88;transform:translateY(-1px)}.next-btn.show{display:block}
+.btn-red{display:block;width:100%;padding:clamp(8px,2vh,12px);background:linear-gradient(135deg,var(--green-mid),#0d3b1a);color:var(--snow);border:1px solid rgba(82,190,128,.3);border-radius:10px;font-size:clamp(12px,3.5vw,14px);font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s}
+.btn-red:hover:not(:disabled){opacity:.88;transform:translateY(-1px)}.btn-red:disabled{opacity:.45;cursor:not-allowed}
+.btn-ghost{display:block;width:100%;padding:clamp(8px,2vh,12px);background:rgba(26,188,156,.1);color:var(--text-muted);border:1.5px solid rgba(46,134,193,.3);border-radius:10px;font-size:clamp(12px,3.5vw,14px);cursor:pointer;margin-top:8px;font-family:inherit;transition:all .15s}
+.btn-ghost:hover{background:rgba(46,134,193,.2);color:var(--snow);transform:translateY(-1px)}
+.btn-back{display:inline-flex;align-items:center;gap:5px;background:rgba(26,188,156,.12);color:#fff;border:1.5px solid rgba(46,204,113,.3);border-radius:20px;padding:5px 14px;font-size:clamp(11px,3vw,12px);font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;margin-bottom:8px;align-self:flex-start}
+.btn-back:hover{background:rgba(26,188,156,.25);transform:translateX(-2px)}
+.hint-toggle{display:block;width:100%;background:none;border:none;font-size:12px;color:var(--text-muted);cursor:pointer;padding:.4rem;text-align:center;margin-top:4px;font-family:inherit}
+
+/* ── RECONSTRUIRE ── */
+.reconstruct-zone{background:rgba(26,82,118,.2);border:2px dashed rgba(46,134,193,.3);border-radius:14px;padding:clamp(6px,1.5vh,12px);margin-bottom:clamp(5px,1.5vh,10px);min-height:clamp(40px,8vh,70px);display:flex;align-items:center;justify-content:center}
+.reconstruct-slots{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center;min-height:36px;width:100%}
+.slot-word{background:linear-gradient(135deg,var(--green-light),var(--green-mid));border:1.5px solid rgba(82,190,128,.4);border-radius:8px;padding:clamp(4px,1vh,7px) clamp(7px,2vw,12px);font-size:clamp(12px,3.5vw,15px);font-weight:700;color:#fff;cursor:pointer;transition:all .12s;font-family:inherit}
+.slot-word:hover{background:linear-gradient(135deg,var(--aurora-green),var(--aurora-teal));transform:translateY(-1px)}
+.word-bank{display:flex;flex-wrap:wrap;gap:clamp(4px,1.5vw,8px);justify-content:center;padding:clamp(4px,1vh,8px) 0 clamp(6px,1.5vh,12px);margin-bottom:.25rem}
+.bank-word{background:rgba(26,82,118,.5);border:2px solid rgba(46,134,193,.4);border-radius:10px;padding:clamp(5px,1.5vh,9px) clamp(8px,2.5vw,14px);font-size:clamp(12px,3.5vw,15px);font-weight:700;color:var(--snow);cursor:pointer;transition:all .12s;font-family:inherit}
+.bank-word:hover:not(.used){background:linear-gradient(135deg,var(--aurora-green),var(--aurora-teal));color:#fff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(82,190,128,.3)}
+.bank-word.used{opacity:.22;cursor:default;pointer-events:none;transform:none}
+.word-bank-label{font-size:clamp(9px,2.5vw,11px);color:var(--text-muted);text-align:center;margin-bottom:6px}
+
+/* ── RÉSULTATS ── */
+.results{text-align:center;padding:.25rem 0}
+.result-emoji{font-size:clamp(30px,8vw,46px);margin-bottom:clamp(4px,1.5vh,10px);animation:bounceIn .5s cubic-bezier(.36,.07,.19,.97)}
+@keyframes bounceIn{0%{transform:scale(0)}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+.score-circle{width:clamp(75px,18vw,110px);height:clamp(75px,18vw,110px);border:3px solid var(--aurora-green);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto clamp(8px,2vh,16px);background:rgba(26,82,118,.3);animation:circleGrow .6s cubic-bezier(.4,0,.2,1)}
+@keyframes circleGrow{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+.big-score{font-size:clamp(22px,6vw,34px);font-weight:700;color:var(--aurora-green)}
+.score-total{font-size:12px;color:var(--text-muted)}
+.result-msg{font-size:clamp(16px,5vw,22px);font-weight:700;color:var(--snow);margin-bottom:4px}
+.result-sub{font-size:clamp(11px,3vw,13px);color:var(--text-muted);margin-bottom:clamp(8px,2vh,16px)}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(5px,1.5vw,10px);margin-bottom:clamp(8px,2vh,16px)}
+.stat-box{background:rgba(26,82,118,.3);border:1px solid rgba(46,134,193,.2);border-radius:10px;padding:.75rem .5rem}
+.stat-val{font-size:clamp(18px,5vw,24px);font-weight:700;color:var(--aurora-green)}
+.stat-lbl{font-size:clamp(9px,2.5vw,11px);color:var(--text-muted);margin-top:2px}
+.perf-chart{margin-bottom:clamp(8px,2vh,16px)}
+.perf-chart h4{font-size:12px;color:var(--text-muted);margin-bottom:8px}
+.perf-bars{display:flex;align-items:flex-end;gap:3px;height:56px;padding:0 2px}
+.perf-bar{flex:1;border-radius:3px 3px 0 0;min-height:4px;transition:height .7s cubic-bezier(.4,0,.2,1)}
+.perf-bar.ok{background:linear-gradient(180deg,var(--aurora-green),#1e6a3a)}
+.perf-bar.ko{background:linear-gradient(180deg,#e74c3c,#922b21)}
+.wrong-list{text-align:left;margin-bottom:clamp(8px,2vh,18px)}
+.wrong-list h4{font-size:13px;font-weight:700;color:var(--text-muted);margin-bottom:8px}
+.wrong-item{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(46,134,193,.15);font-size:14px}
+.wrong-char{font-size:18px;color:var(--snow);font-weight:700}
+.wrong-ans{color:var(--text-muted);font-size:13px}
+.review-tag{font-size:10px;padding:1px 6px;border-radius:8px;background:rgba(82,190,128,.1);color:var(--aurora-green);border:1px solid rgba(82,190,128,.2);margin-left:5px}
+
+/* ── DÉFI JOURNALIER ── */
+.defi-header{flex-shrink:0;text-align:center;margin-bottom:clamp(5px,1.5vh,14px)}
+.defi-header h2{font-size:clamp(14px,4vw,18px);font-weight:900;color:var(--snow);margin-bottom:3px}
+.defi-header p{font-size:12px;color:var(--text-muted)}
+.defi-countdown{display:inline-flex;align-items:center;gap:5px;background:rgba(26,82,118,.4);border:1px solid rgba(82,190,128,.3);border-radius:20px;padding:4px 12px;font-size:11px;color:var(--aurora-green);font-weight:600;margin-top:5px}
+.defi-steps{display:flex;justify-content:center;gap:clamp(3px,1vw,6px);margin-bottom:clamp(5px,1.5vh,12px);flex-wrap:wrap;flex-shrink:0}
+.defi-step{width:clamp(18px,5vw,26px);height:clamp(18px,5vw,26px);border-radius:50%;border:2px solid rgba(46,134,193,.3);background:rgba(26,82,118,.3);display:flex;align-items:center;justify-content:center;font-size:clamp(8px,2.5vw,10px);font-weight:700;color:var(--text-muted);transition:all .3s;flex-shrink:0}
+.defi-step.done{background:linear-gradient(135deg,var(--aurora-green),#1e6a3a);border-color:#27ae60;color:#fff}
+.defi-step.active{background:linear-gradient(135deg,var(--green-light),var(--green-mid));border-color:var(--aurora-green);color:#fff;transform:scale(1.15);box-shadow:0 2px 8px rgba(82,190,128,.4)}
+.defi-step.fail{background:linear-gradient(135deg,#e74c3c,#922b21);border-color:#922b21;color:#fff}
+.defi-phase-lbl{text-align:center;font-size:clamp(9px,2.5vw,12px);font-weight:700;color:var(--aurora-green);margin-bottom:clamp(4px,1vh,8px);letter-spacing:.5px;text-transform:uppercase;flex-shrink:0}
+
+.defi-result-wrap{text-align:center;padding:.5rem 0}
+.defi-trophy{font-size:clamp(36px,10vw,56px);animation:bounceIn .5s cubic-bezier(.36,.07,.19,.97);margin-bottom:.5rem}
+.defi-stars{display:flex;justify-content:center;gap:5px;margin:.5rem 0 .75rem;font-size:clamp(18px,5vw,26px)}
+.defi-stars span{transition:transform .3s,opacity .3s;opacity:0;transform:scale(0)}
+.defi-stars span.lit{opacity:1;transform:scale(1)}
+.defi-xp-bar{background:rgba(26,82,118,.3);border:1px solid rgba(46,134,193,.2);border-radius:12px;padding:.75rem 1rem;margin-bottom:.85rem}
+.defi-xp-bar .xp-label{font-size:11px;color:var(--text-muted);display:flex;justify-content:space-between;margin-bottom:5px}
+.defi-xp-fill-wrap{height:8px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden}
+.defi-xp-fill{height:100%;background:linear-gradient(90deg,var(--gold),#f39c12);border-radius:4px;width:0;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+.defi-badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:.9rem}
+.defi-badge{background:rgba(26,82,118,.4);border:1px solid rgba(46,134,193,.2);border-radius:10px;padding:6px 10px;font-size:11px;color:var(--snow);font-weight:700;text-align:center;animation:fadeIn .4s ease both}
+.defi-badge .badge-icon{font-size:18px;display:block;margin-bottom:2px}
+.defi-already-done{text-align:center;padding:1rem 0}
+.defi-already-done .big-check{font-size:54px;margin-bottom:.5rem}
+.defi-already-done h3{font-size:16px;font-weight:700;color:var(--aurora-green);margin-bottom:.3rem}
+.defi-already-done p{font-size:12px;color:var(--text-muted);margin-bottom:.75rem}
+.defi-history{background:rgba(26,82,118,.2);border:1px solid rgba(46,134,193,.2);border-radius:10px;padding:.6rem .8rem;margin-bottom:.75rem}
+.defi-history h4{font-size:11px;font-weight:700;color:var(--text-muted);margin-bottom:5px}
+.defi-cal{display:flex;gap:4px;flex-wrap:wrap}
+.defi-day{width:22px;height:22px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;border:1px solid rgba(46,134,193,.2)}
+.defi-day.won{background:linear-gradient(135deg,var(--aurora-green),#1e6a3a);color:#fff;border-color:#27ae60}
+.defi-day.lost{background:linear-gradient(135deg,#e74c3c,#922b21);color:#fff;border-color:#922b21}
+.defi-day.empty{background:rgba(26,82,118,.2);color:var(--text-muted)}
+
+/* ── TRADUCTEUR ── */
+.trad-screen{display:flex;flex-direction:column;gap:8px;padding:4px 0}
+.trad-lang-bar{display:flex;align-items:center;justify-content:space-between;gap:6px;flex-shrink:0}
+.trad-lang-label{flex:1;text-align:center;font-size:13px;font-weight:700;color:var(--snow);background:rgba(26,188,156,.15);border:1.5px solid rgba(46,204,113,.3);border-radius:10px;padding:6px 8px}
+.trad-swap-btn{background:rgba(82,190,128,.2);border:1.5px solid rgba(82,190,128,.4);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;flex-shrink:0;transition:all .2s;color:#fff}
+.trad-swap-btn:hover{background:rgba(82,190,128,.4);transform:rotate(180deg)}
+.trad-box{background:rgba(13,33,55,.6);border:1.5px solid rgba(46,134,193,.3);border-radius:14px;padding:10px 12px;position:relative;min-height:90px;display:flex;flex-direction:column;gap:6px}
+.trad-box textarea{background:transparent;border:none;outline:none;color:var(--snow);font-size:16px;font-family:inherit;resize:none;width:100%;min-height:60px;line-height:1.5}
+.trad-box textarea::placeholder{color:rgba(255,255,255,.3)}
+.trad-box-label{font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:.8px;text-transform:uppercase}
+.trad-box-actions{display:flex;gap:6px;align-items:center;justify-content:flex-end}
+.trad-action-btn{background:rgba(82,190,128,.15);border:1px solid rgba(82,190,128,.3);border-radius:20px;padding:4px 10px;font-size:12px;color:var(--aurora-green);cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;gap:4px}
+.trad-action-btn:hover{background:rgba(82,190,128,.3)}
+.trad-action-btn.active{background:rgba(82,190,128,.4);border-color:var(--aurora-green)}
+.trad-result-box{background:rgba(26,82,118,.25);border:1.5px solid rgba(46,134,193,.2);border-radius:14px;padding:10px 12px;min-height:90px;position:relative}
+.trad-result-text{font-size:18px;font-weight:700;color:var(--snow);line-height:1.5;word-break:break-word}
+.trad-result-hint{font-size:11px;color:var(--aurora-teal);font-family:'Courier New',monospace;margin-top:4px}
+.trad-result-placeholder{font-size:14px;color:rgba(255,255,255,.2);font-style:italic}
+.trad-translate-btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--green-mid),#0d3b1a);color:var(--snow);border:1px solid rgba(82,190,128,.4);border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px}
+.trad-translate-btn:hover{opacity:.88;transform:translateY(-1px)}
+.trad-translate-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.trad-loading{display:flex;align-items:center;gap:8px;color:var(--text-muted);font-size:13px;padding:8px 0}
+.trad-mic-btn{background:rgba(231,76,60,.15);border:1.5px solid rgba(231,76,60,.4);border-radius:20px;padding:4px 10px;font-size:12px;color:#e74c3c;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;gap:4px}
+.trad-mic-btn:hover{background:rgba(231,76,60,.3)}
+.trad-mic-btn.recording{background:rgba(231,76,60,.4);border-color:#e74c3c;animation:micPulse .8s ease-in-out infinite}
+@keyframes micPulse{0%,100%{box-shadow:0 0 0 0 rgba(231,76,60,.4)}50%{box-shadow:0 0 0 6px rgba(231,76,60,0)}}
+
+/* ── AI LOADING ── */
+.ai-loading{display:flex;align-items:center;justify-content:center;gap:8px;padding:.65rem;font-size:13px;color:var(--text-muted)}
+.spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.1);border-top-color:var(--aurora-green);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+
+    <!-- Audio Data -->
+    <script>
+// ══════════════════════════════════════════════════════════
+// DONNÉES D'AUDIO — SLOVÈNE
+// Utilise Google Translate TTS (tl=sl)
+// ══════════════════════════════════════════════════════════
+
+window._AUDIO_DATA_VOCAB = {};
+
+// ── Construction automatique des URL Google TTS ──────────
+(function() {
+  const _g = 'https://translate.googleapis.com/translate_tts?ie=UTF-8&q=';
+  const _t = '&tl=sl&client=gtx&ttsspeed=0.85';
+  const words = [
+    // Nature
+    'gora','reka','jezero','gozd','cvet','drevo','trava','pesek','led','dež','veter','oblak','nevihta','sonce','luna','zvezda','morje','potok','dolina','skala',
+    // Animaux
+    'pes','mačka','konj','krava','ptica','riba','zajec','sova','medved','volk','lisica','jeleň','miš','kača','metulj',
+    // Temps / Calendrier
+    'vedno','nikoli','včasih','ponedeljek','torek','sreda','četrtek','petek','sobota','nedelja','danes','jutri','včeraj','dopoldne','popoldne','zvečer','ponoči',
+    // Nourriture
+    'kruh','sir','jajce','piščanec','krompir','paradižnik','kumara','jabolko','banana','jagoda','kava','čaj','sok','sladoled','torta','čokolada','juha','meso','ribe','zelenjava','sadje','kruh','maslo','mleko','voda','vino','pivo',
+    // Famille
+    'sestra','brat','dedek','babica','oče','mati','stric','teta','bratranec','dojenček','družina','sin','hči','mož','žena',
+    // Lieux & transport
+    'bolnišnica','lekarna','knjižnica','restavracija','hotel','letališče','pristanišče','cerkev','park','trg','avtobus','vlak','avto','kolo','čoln','cesta','most','šola','trgovina','tržnica',
+    // Couleurs
+    'rdeča','modra','zelena','rumena','črna','bela','oranžna','roza','vijolična','rjava','siva',
+    // Chiffres
+    'ena','dve','tri','štiri','pet','šest','sedem','osem','devet','deset','enajst','dvanajst','dvajset','trideset','sto','tisoč',
+    // Émotions
+    'žalosten','jezen','prestrašen','presenečen','lačen','žejen','bolan','zdrav','stresen','zadovoljen','srečen','utrujen','samoten','ponosen','živčen',
+    // Vêtements
+    'jopica','majica','hlače','krilo','čevlji','kapa','rokavice','površina','nogavice','plašč',
+    // Expressions
+    'Dober večer','Seveda','Hvala lepa','Prosim','Oprostite','Na svidenje','Dobro jutro','Lahko noč',
+  ];
+  window._AUDIO_DATA_VOCAB = {};
+  words.forEach(function(w) {
+    window._AUDIO_DATA_VOCAB[w] = _g + encodeURIComponent(w) + _t;
+  });
+})();
+</script>
+    <script>
+// ══════════════════════════════════════════════════════════
+// DONNÉES D'AUDIO — SLOVÈNE (verbes & phrases)
+// ══════════════════════════════════════════════════════════
+
+window._AUDIO_DATA_VERBES = {};
+
+(function() {
+  const _g = 'https://translate.googleapis.com/translate_tts?ie=UTF-8&q=';
+  const _t = '&tl=sl&client=gtx&ttsspeed=0.85';
+  const words = [
+    // Verbes
+    'jesti','piti','spati','iti','teči','brati','pisati','govoriti','poslušati','gledati','delati','študirati','kupiti','prodati','pomagati','razumeti','vedeti','misliti','čutiti','ljubiti','imeti rad','hoteti','znati','morati','priti','oditi','ostati','odpreti','zapreti','dati','vzeti','najti','začeti','nehati','kuhati','peči','rezati','mešati','smejati se','plakati','smrdeti','vonjati','dotikati se','nositi','oblačiti se','sleči se','kopati se','česati se','umivati se',
+  ];
+  window._AUDIO_DATA_VERBES = {};
+  words.forEach(function(w) {
+    window._AUDIO_DATA_VERBES[w] = _g + encodeURIComponent(w) + _t;
+  });
+})();
+</script>
+</head>
+<body>
+
+<!-- Flocons de neige -->
+<div id="snowflakes"></div>
+
+<!-- Fond paysage Lac de Bled plein écran -->
+<div style="position:fixed;inset:0;z-index:0;pointer-events:none;background:#4a90d9;overflow:hidden">
+<svg id="landscapeSvg" viewBox="0 0 1000 2167" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%;display:block">
+  <defs>
+    <linearGradient id="lSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2a5fa8"/><stop offset="30%" stop-color="#4a90d9"/><stop offset="65%" stop-color="#6ab4f7"/><stop offset="100%" stop-color="#a8d8f0"/></linearGradient>
+    <linearGradient id="lCloud" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffffff" stop-opacity=".97"/><stop offset="100%" stop-color="#ddeef8" stop-opacity=".88"/></linearGradient>
+    <linearGradient id="lMtnFar" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8aabb8"/><stop offset="100%" stop-color="#5a7a8a"/></linearGradient>
+    <linearGradient id="lTriglav" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6a8aaa"/><stop offset="45%" stop-color="#4a6a80"/><stop offset="100%" stop-color="#3a5060"/></linearGradient>
+    <linearGradient id="lSnow" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#d8eaf8" stop-opacity=".8"/></linearGradient>
+    <linearGradient id="lLake" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2a8a70" stop-opacity=".95"/><stop offset="100%" stop-color="#145a48"/></linearGradient>
+    <linearGradient id="lLakeReflect" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="transparent"/><stop offset="40%" stop-color="rgba(255,255,255,0.18)"/><stop offset="60%" stop-color="rgba(100,200,180,0.12)"/><stop offset="100%" stop-color="transparent"/></linearGradient>
+    <linearGradient id="lChurch" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#d4c498"/><stop offset="100%" stop-color="#b8a478"/></linearGradient>
+    <linearGradient id="lChurchRoof" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#8a3a20"/><stop offset="100%" stop-color="#6a2a18"/></linearGradient>
+    <linearGradient id="lIsland" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#2d7a3a"/><stop offset="100%" stop-color="#1a5a28"/></linearGradient>
+    <radialGradient id="lSunRef" cx="50%" cy="0%" r="100%"><stop offset="0%" stop-color="#fffde0" stop-opacity=".5"/><stop offset="100%" stop-color="#fffde0" stop-opacity="0"/></radialGradient>
+    <linearGradient id="lLake2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a9aaa" stop-opacity=".95"/>
+      <stop offset="50%" stop-color="#1a7a8a"/>
+      <stop offset="100%" stop-color="#0d5060"/>
+    </linearGradient>
+    <radialGradient id="lLakeMid" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#4ab8cc" stop-opacity=".55"/>
+      <stop offset="100%" stop-color="#1a7a8a" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="lTreeShadow"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity=".2"/></filter>
+    <filter id="lBlur2"><feGaussianBlur stdDeviation="2"/></filter>
+    <filter id="lSunGlow"><feGaussianBlur stdDeviation="16"/></filter>
+    <style>
+      @keyframes lc1anim{0%{transform:translateX(0)}100%{transform:translateX(60px)}}
+      @keyframes lc2anim{0%{transform:translateX(0)}100%{transform:translateX(-50px)}}
+      @keyframes lsunanim{0%,100%{opacity:.88}50%{opacity:1}}
+      @keyframes lbirdanim{0%{transform:translateX(-250px)}100%{transform:translateX(1250px)}}
+      .lc1{animation:lc1anim 22s ease-in-out infinite alternate}
+      .lc2{animation:lc2anim 28s ease-in-out infinite alternate}
+      .lsun{animation:lsunanim 6s ease-in-out infinite}
+      .lbird{animation:lbirdanim 32s linear infinite}
+    </style>
+    <clipPath id="lClip"><rect x="0" y="0" width="1000" height="2167"/></clipPath>
+  </defs>
+  <g clip-path="url(#lClip)">
+    <!-- CIEL — couvre tout le SVG, hors translation -->
+    <rect x="0" y="0" width="1000" height="2167" fill="url(#lSky)"/>
+    <!-- TOUT LE CONTENU décalé de +700px pour centrer l'île (y=383→1083=50% de 2167) -->
+    <g transform="translate(0,700)">
+    <!-- SOLEIL -->
+    <circle cx="820" cy="70" r="90" fill="#ffe082" opacity=".12" filter="url(#lSunGlow)"/>
+    <circle cx="820" cy="70" r="34" fill="#fffde0" class="lsun" filter="url(#lBlur2)"/>
+    <circle cx="820" cy="70" r="28" fill="#ffe082" class="lsun"/>
+    <!-- NUAGES -->
+    <g class="lc1" opacity=".72">
+      <ellipse cx="100" cy="60" rx="80" ry="20" fill="url(#lCloud)"/>
+      <ellipse cx="160" cy="48" rx="55" ry="22" fill="url(#lCloud)"/>
+      <ellipse cx="60" cy="62" rx="40" ry="15" fill="url(#lCloud)"/>
+    </g>
+    <g class="lc2" opacity=".62">
+      <ellipse cx="480" cy="40" rx="95" ry="18" fill="url(#lCloud)"/>
+      <ellipse cx="570" cy="28" rx="65" ry="20" fill="url(#lCloud)"/>
+      <ellipse cx="405" cy="42" rx="48" ry="14" fill="url(#lCloud)"/>
+    </g>
+    <g class="lc1" opacity=".42">
+      <ellipse cx="900" cy="80" rx="58" ry="16" fill="url(#lCloud)"/>
+      <ellipse cx="950" cy="68" rx="38" ry="14" fill="url(#lCloud)"/>
+    </g>
+    <!-- OISEAUX -->
+    <g class="lbird" opacity=".4">
+      <path d="M0,100 Q4,94 8,100 Q12,94 16,100" fill="none" stroke="#2a3a2a" stroke-width="2"/>
+      <path d="M22,88 Q26,82 30,88 Q34,82 38,88" fill="none" stroke="#2a3a2a" stroke-width="1.8"/>
+    </g>
+    <!-- MONTAGNES LOINTAINES -->
+    <path d="M-20,340 Q60,250 130,268 Q200,284 250,255 Q300,222 360,238 Q420,255 470,248 Q520,238 580,252 Q640,268 700,255 Q760,242 820,260 Q880,278 940,260 Q980,248 1020,265 L1020,430 L-20,430 Z" fill="url(#lMtnFar)" opacity=".58"/>
+    <path d="M600,340 Q660,228 720,192 Q770,160 840,192 Q900,222 960,200 Q990,188 1020,210 L1020,430 L600,430 Z" fill="url(#lMtnFar)" opacity=".52"/>
+    <!-- TRIGLAV GAUCHE — sommet visuel (269,134) -->
+    <path d="M60,400 Q160,238 240,152 Q262,125 282,138 Q325,172 375,400 Z" fill="url(#lTriglav)" opacity=".95"/>
+    <!-- NEIGE GAUCHE: suit exactement les beziers de la montagne -->
+    <path d="M219,175 Q230,162 243,148 Q256,134 269,134 Q282,138 292,148 Q301,162 308,175 Q291,171 269,173 Q248,171 219,175 Z" fill="url(#lSnow)" opacity=".96"/>
+    <path d="M243,148 Q256,134 269,134 Q282,138 292,148 Q283,145 269,146 Q256,145 243,148 Z" fill="#ffffff" opacity=".88"/>
+
+    <!-- TRIGLAV CENTRAL — sommet visuel (527,97) -->
+    <path d="M335,400 Q445,208 502,118 Q520,88 540,102 Q580,132 625,208 Q665,275 695,400 Z" fill="url(#lTriglav)"/>
+    <!-- NEIGE CENTRALE: contours calculés par subdivision exacte des Béziers -->
+    <!-- Flanc G: seg1(335,400→ctrl445,208→502,118) subdivisé à t=0.910 → départ(491,135) -->
+    <!-- Flanc D: seg3(540,102→ctrl580,132→625,208) subdivisé à t=0.417 → arrivée(574,135) -->
+    <path d="M491,135 Q497,126 502,118 Q520,88 540,102 Q557,115 574,135 Q533,141 491,135 Z" fill="url(#lSnow)" opacity=".96"/>
+    <path d="M511,107 Q519,98 527,97 Q536,100 540,107 Q535,105 527,106 Q519,105 511,107 Z" fill="#ffffff" opacity=".92"/>
+
+    <!-- TRIGLAV DROIT — sommet visuel (827,153) -->
+    <path d="M670,400 Q748,238 804,168 Q820,146 838,156 Q876,180 938,285 Q968,336 1010,400 Z" fill="url(#lTriglav)" opacity=".95"/>
+    <!-- NEIGE DROITE: contours calculés par subdivision exacte des Béziers -->
+    <!-- Flanc G: seg1(670,400→ctrl748,238→804,168) subdivisé à t=0.856 → départ(787,190) -->
+    <!-- Flanc D: seg3(838,156→ctrl876,180→938,285) subdivisé à t=0.416 → arrivée(874,190) -->
+    <path d="M787,190 Q796,178 804,168 Q820,146 838,156 Q854,166 874,190 Q831,196 787,190 Z" fill="url(#lSnow)" opacity=".96"/>
+    <path d="M811,162 Q819,153 827,153 Q836,157 838,163 Q833,161 827,162 Q820,161 811,162 Z" fill="#ffffff" opacity=".92"/>
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- COLLINES DE LIAISON (entre montagnes et lac)       -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- Colline gauche — relie le bas de la montagne G à la rive -->
+    <path d="M-20,420 Q60,370 160,375 Q220,378 280,390 Q320,396 370,400 L370,430 L-20,430 Z" fill="#3a6a48" opacity=".85"/>
+    <path d="M-20,420 Q60,370 160,375 Q220,378 280,390 Q320,396 370,400 L370,420 L-20,420 Z" fill="#4a7a58" opacity=".5"/>
+    <!-- Colline droite — relie le bas de la montagne D à la rive -->
+    <path d="M1020,418 Q950,365 850,372 Q790,376 730,388 Q690,394 640,400 L640,430 L1020,430 Z" fill="#3a6a48" opacity=".85"/>
+    <path d="M1020,418 Q950,365 850,372 Q790,376 730,388 Q690,394 640,400 L640,420 L1020,420 Z" fill="#4a7a58" opacity=".5"/>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- FORÊT GAUCHE — sapins en couches avec troncs       -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- Couche arrière (plus clair, plus petit) -->
+    <g fill="#2a5a28" opacity=".60">
+      <path d="M-20,388 L8,330 L36,388 Z"/>
+      <path d="M20,390 L50,325 L80,390 Z"/>
+      <path d="M55,392 L88,315 L121,392 Z"/>
+      <path d="M90,390 L120,328 L150,390 Z"/>
+      <path d="M125,392 L155,320 L185,392 Z"/>
+      <path d="M158,390 L188,330 L218,390 Z"/>
+    </g>
+    <!-- Couche milieu -->
+    <g fill="#2a6a30" opacity=".90">
+      <path d="M-15,393 L14,328 L43,393 Z"/>
+      <path d="M-15,393 L14,328 L43,393 Z"/>
+      <path d="M26,394 L58,312 L90,394 Z"/>
+      <path d="M62,394 L95,300 L128,394 Z"/>
+      <path d="M100,394 L128,316 L156,394 Z"/>
+      <path d="M132,394 L162,306 L192,394 Z"/>
+      <path d="M164,394 L192,318 L220,394 Z"/>
+    </g>
+    <!-- Couche avant (plus sombre, plus grand) -->
+    <g fill="#1e5224" opacity=".95">
+      <path d="M-18,400 L12,318 L42,400 Z"/>
+      <path d="M22,400 L55,304 L88,400 Z"/>
+      <path d="M60,400 L96,290 L132,400 Z"/>
+      <path d="M102,400 L132,308 L162,400 Z"/>
+      <path d="M136,400 L166,298 L196,400 Z"/>
+      <path d="M168,400 L196,312 L224,400 Z"/>
+    </g>
+    <!-- Troncs forêt gauche -->
+    <g fill="#3a2a18" opacity=".7">
+      <rect x="10" y="388" width="4" height="14"/>
+      <rect x="52" y="388" width="5" height="14"/>
+      <rect x="93" y="388" width="5" height="14"/>
+      <rect x="128" y="388" width="4" height="14"/>
+      <rect x="163" y="388" width="4" height="14"/>
+      <rect x="193" y="388" width="4" height="12"/>
+    </g>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- FORÊT DROITE — sapins en couches avec troncs       -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- Couche arrière -->
+    <g fill="#2a5a28" opacity=".60">
+      <path d="M792,388 L820,330 L848,388 Z"/>
+      <path d="M828,390 L858,325 L888,390 Z"/>
+      <path d="M862,388 L893,315 L924,388 Z"/>
+      <path d="M898,390 L928,328 L958,390 Z"/>
+      <path d="M930,388 L960,318 L990,388 Z"/>
+      <path d="M964,390 L994,330 L1024,390 Z"/>
+    </g>
+    <!-- Couche milieu -->
+    <g fill="#2a6a30" opacity=".90">
+      <path d="M788,394 L818,316 L848,394 Z"/>
+      <path d="M822,394 L854,304 L886,394 Z"/>
+      <path d="M858,394 L891,298 L924,394 Z"/>
+      <path d="M894,394 L924,312 L954,394 Z"/>
+      <path d="M928,394 L958,306 L988,394 Z"/>
+      <path d="M962,394 L992,318 L1022,394 Z"/>
+    </g>
+    <!-- Couche avant -->
+    <g fill="#1e5224" opacity=".95">
+      <path d="M784,400 L816,306 L848,400 Z"/>
+      <path d="M820,400 L855,292 L890,400 Z"/>
+      <path d="M858,400 L894,286 L930,400 Z"/>
+      <path d="M896,400 L928,304 L960,400 Z"/>
+      <path d="M930,400 L962,296 L994,400 Z"/>
+      <path d="M964,400 L996,310 L1028,400 Z"/>
+    </g>
+    <!-- Troncs forêt droite -->
+    <g fill="#3a2a18" opacity=".7">
+      <rect x="813" y="388" width="4" height="14"/>
+      <rect x="851" y="388" width="5" height="14"/>
+      <rect x="890" y="388" width="5" height="14"/>
+      <rect x="925" y="388" width="4" height="14"/>
+      <rect x="959" y="388" width="4" height="14"/>
+      <rect x="993" y="388" width="4" height="12"/>
+    </g>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- BERGES DU LAC — transition douce terrain→eau       -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- Berge avant gauche (devant le lac, rive gauche) -->
+    <path d="M170,400 Q210,390 240,392 Q260,393 290,395 Q310,396 330,395 L330,408 Q300,408 260,406 Q220,404 170,408 Z" fill="#4a8a38" opacity=".9"/>
+    <!-- Berge avant droite -->
+    <path d="M670,395 Q700,393 730,395 Q760,396 790,394 Q820,393 840,396 L840,408 Q810,406 770,407 Q730,408 690,406 Q670,405 670,408 Z" fill="#4a8a38" opacity=".9"/>
+
+    <!-- LAC BLED -->
+    <!-- Corps principal du lac -->
+    <ellipse cx="500" cy="400" rx="300" ry="16" fill="url(#lLake2)"/>
+    <!-- Brillance centrale du lac -->
+    <ellipse cx="500" cy="398" rx="260" ry="10" fill="url(#lLakeMid)"/>
+    <!-- Reflet soleil sur l'eau -->
+    <ellipse cx="600" cy="399" rx="50" ry="7" fill="url(#lSunRef)" opacity=".8"/>
+    <!-- Lignes de reflet (ondulations) -->
+    <path d="M250,398 Q375,395 500,397 Q625,399 750,397" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.2"/>
+    <path d="M290,402 Q400,400 500,401 Q610,402 710,400" fill="none" stroke="rgba(255,255,255,.15)" stroke-width="0.8"/>
+    <path d="M360,405 Q430,404 500,404 Q570,404 640,403" fill="none" stroke="rgba(255,255,255,.12)" stroke-width="0.7"/>
+    <!-- Reflet des montagnes dans le lac (teinte bleue sombre) -->
+    <ellipse cx="280" cy="402" rx="75" ry="8" fill="#1a4a60" opacity=".3"/>
+    <ellipse cx="720" cy="402" rx="75" ry="8" fill="#1a4a60" opacity=".25"/>
+    <!-- Reflet de l'île -->
+    <ellipse cx="500" cy="407" rx="28" ry="4" fill="#0d3a28" opacity=".4"/>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- ILE DE BLED                                         -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <ellipse cx="500" cy="394" rx="48" ry="7" fill="url(#lIsland)"/>
+    <!-- Arbres île -->
+    <path d="M464,390 L470,368 L477,390 Z" fill="#1a5a28"/>
+    <path d="M474,391 L481,370 L489,391 Z" fill="#2a6a3a"/>
+    <path d="M514,390 L521,369 L528,390 Z" fill="#1a5a28"/>
+    <path d="M523,391 L531,372 L538,391 Z" fill="#2a6a3a"/>
+    <!-- Église -->
+    <rect x="491" y="377" width="18" height="15" fill="url(#lChurch)"/>
+    <polygon points="489,378 500,369 511,378" fill="url(#lChurchRoof)"/>
+    <rect x="496" y="359" width="8" height="20" fill="url(#lChurch)"/>
+    <polygon points="494,360 500,348 506,360" fill="url(#lChurchRoof)"/>
+    <line x1="500" y1="345" x2="500" y2="351" stroke="#c9a84c" stroke-width="2"/>
+    <line x1="497" y1="347.5" x2="503" y2="347.5" stroke="#c9a84c" stroke-width="2"/>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- BARQUE                                              -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <path d="M340,387 Q352,384 365,386 Q378,384 391,387 L387,390 Q365,392 344,390 Z" fill="#6a4a20" opacity=".85"/>
+    <line x1="365" y1="386" x2="365" y2="372" stroke="#5a3a10" stroke-width="1.2" opacity=".7"/>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- BUISSONS RIV GAUCHE DU LAC                         -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <g fill="#2a6a30" opacity=".85">
+      <ellipse cx="195" cy="392" rx="22" ry="10"/>
+      <ellipse cx="218" cy="390" rx="18" ry="9"/>
+      <ellipse cx="238" cy="393" rx="20" ry="9"/>
+    </g>
+    <g fill="#1e5224" opacity=".7">
+      <ellipse cx="195" cy="392" rx="14" ry="7"/>
+      <ellipse cx="218" cy="390" rx="12" ry="6"/>
+      <ellipse cx="238" cy="393" rx="14" ry="6"/>
+    </g>
+    <!-- BUISSONS RIV DROITE DU LAC -->
+    <g fill="#2a6a30" opacity=".85">
+      <ellipse cx="762" cy="396" rx="22" ry="10"/>
+      <ellipse cx="785" cy="394" rx="18" ry="9"/>
+      <ellipse cx="806" cy="397" rx="20" ry="9"/>
+    </g>
+    <g fill="#1e5224" opacity=".7">
+      <ellipse cx="762" cy="396" rx="14" ry="7"/>
+      <ellipse cx="785" cy="394" rx="12" ry="6"/>
+      <ellipse cx="806" cy="397" rx="14" ry="6"/>
+    </g>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- SOL PRAIRIE — transition lac→herbe                 -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <defs><linearGradient id="lGround2" x1="0" y1="404" x2="0" y2="2167" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7ab85a"/>
+      <stop offset="35%" stop-color="#5a9a40"/>
+      <stop offset="100%" stop-color="#3a7828"/>
+    </linearGradient></defs>
+    <!-- Bande herbeuse devant le lac -->
+    <path d="M0,398 Q80,394 180,396 Q240,397 320,400 Q400,402 500,400 Q600,398 680,401 Q760,403 840,399 Q920,396 1000,398 L1000,415 L0,415 Z" fill="#5a9a40" opacity=".9"/>
+    <!-- Sol principal -->
+    <path d="M0,408 Q120,400 250,404 Q400,408 500,405 Q640,401 800,405 Q900,407 1000,402 L1000,2167 L0,2167 Z" fill="#5a9a40"/>
+    <path d="M0,408 Q120,400 250,404 Q400,408 500,405 Q640,401 800,405 Q900,407 1000,402 L1000,2167 L0,2167 Z" fill="url(#lGround2)"/>
+    <!-- Ligne d'herbe lumineuse -->
+    <path d="M0,408 Q120,401 250,404 Q400,408 500,405 Q640,401 800,405 Q900,407 1000,402" fill="none" stroke="rgba(180,230,130,.45)" stroke-width="1.4"/>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- BUISSONS BORD PRAIRIE (liaison herbe/arbres)       -->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- Gauche : entre forêt et prairie -->
+    <g fill="#2d7030" opacity=".88">
+      <ellipse cx="195" cy="406" rx="28" ry="11"/>
+      <ellipse cx="225" cy="403" rx="22" ry="10"/>
+      <ellipse cx="248" cy="407" rx="24" ry="10"/>
+      <ellipse cx="268" cy="405" rx="18" ry="9"/>
+    </g>
+    <g fill="#1e5a22" opacity=".65">
+      <ellipse cx="195" cy="406" rx="18" ry="7"/>
+      <ellipse cx="225" cy="403" rx="14" ry="6"/>
+      <ellipse cx="248" cy="407" rx="16" ry="6"/>
+    </g>
+
+
+    <!-- FLEURS (JS) -->
+    <g id="flowersGroup" opacity=".85"></g>
+    <!-- VOILE BAS -->
+    <defs><linearGradient id="lDark" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="rgba(5,20,10,0)"/><stop offset="100%" stop-color="rgba(3,14,6,.5)"/></linearGradient></defs>
+    <rect x="0" y="1400" width="1000" height="800" fill="url(#lDark)"/>
+
+    <!-- HERBE (JS) — rendu EN PREMIER, sous la route -->
+    <g id="grassGroup"></g>
+
+    <!-- ═══════════════════════════════════════════════════ -->
+    <!-- PISTE CYCLABLE en perspective (au-dessus de l'herbe)-->
+    <!-- ═══════════════════════════════════════════════════ -->
+    <defs>
+      <clipPath id="cpPiste2">
+        <path d="M0,400 Q360,396 900,406 L900,2167 L0,2167 Z"/>
+      </clipPath>
+    </defs>
+    <g clip-path="url(#cpPiste2)">
+      <!-- Corps asphalte gris-brun -->
+      <path d="M -20,655 C 185,572 528,494 840,410 Q870,400 900,398
+               L 900,405
+               Q870,412 840,403
+               C 546,425 198,484 -20,562 Z"
+            fill="#7c7060" opacity="1"/>
+      <!-- Liseret haut (bord côté lac) -->
+      <path d="M -20,562 C 198,484 546,425 840,403 Q870,412 900,405"
+            fill="none" stroke="rgba(210,200,170,.60)" stroke-width="2.2"/>
+      <!-- Liseret bas (bord côté spectateur) -->
+      <path d="M -20,655 C 185,572 528,494 840,410 Q870,400 900,398"
+            fill="none" stroke="rgba(210,200,170,.50)" stroke-width="2.2"/>
+      <!-- Ligne centrale pointillée animée -->
+      <path d="M -20,608 C 192,528 537,460 840,407 Q870,406 900,402"
+            fill="none" stroke="rgba(255,252,230,.55)" stroke-width="1.6"
+            stroke-dasharray="24,18"/>
+    </g>
+    <!-- Droite : buissons au bord de la forêt (au-dessus de la route) -->
+    <g fill="#2d7030" opacity=".92">
+      <ellipse cx="670" cy="448" rx="20" ry="18"/>
+      <ellipse cx="691" cy="442" rx="24" ry="20"/>
+      <ellipse cx="715" cy="448" rx="22" ry="16"/>
+      <ellipse cx="737" cy="445" rx="18" ry="14"/>
+    </g>
+    <g fill="#1e5a22" opacity=".70">
+      <ellipse cx="670" cy="450" rx="13" ry="12"/>
+      <ellipse cx="691" cy="444" rx="16" ry="13"/>
+      <ellipse cx="715" cy="450" rx="14" ry="10"/>
+      <ellipse cx="737" cy="446" rx="12" ry="9"/>
+    </g>
+    <g fill="#3a8035" opacity=".50">
+      <ellipse cx="675" cy="438" rx="12" ry="8"/>
+      <ellipse cx="697" cy="432" rx="16" ry="9"/>
+      <ellipse cx="720" cy="437" rx="13" ry="7"/>
+    </g>
+  </g><!-- /translate(0,700) -->
+  </g><!-- /lClip -->
+</svg>
+</div>
+<script>
+(function(){
+  function seededRand(seed){
+    var s=seed;
+    return function(){s=(s*16807)%2147483647;return(s-1)/2147483646};
+  }
+  var g=document.getElementById('grassGroup');
+  var fg=document.getElementById('flowersGroup');
+  if(!g)return;
+
+  // Zones (yMin,yMax) — les brins poussent n'importe où dans la zone, pas sur une ligne
+  var rows=[
+    {yMin:404,yMax:418,minH:5, maxH:10,minW:.35,maxW:.65,colors:['#5a9030','#4a8028','#3a7020'],opacity:.70},
+    {yMin:418,yMax:438,minH:9, maxH:17,minW:.65,maxW:1.0, colors:['#3d7825','#4a8830','#2d6818'],opacity:.82},
+    {yMin:438,yMax:470,minH:14,maxH:27,minW:1.1,maxW:1.7, colors:['#2d6018','#3a7020','#1e5010'],opacity:.90},
+    {yMin:475,yMax:540,minH:28,maxH:50,minW:1.9,maxW:2.8, colors:['#1e5010','#286018','#163808'],opacity:.96},
+    {yMin:560,yMax:650,minH:45,maxH:80,minW:2.5,maxW:3.8, colors:['#1a4a0e','#245518','#163808'],opacity:.97},
+    {yMin:680,yMax:820,minH:70,maxH:120,minW:3.2,maxW:5.0, colors:['#163808','#1e4a10','#0e2e04'],opacity:.98},
+    {yMin:870,yMax:1100,minH:100,maxH:180,minW:4.5,maxW:7.0,colors:['#0e2e04','#163808','#0a2002'],opacity:.99},
+    {yMin:1150,yMax:1500,minH:160,maxH:280,minW:6.0,maxW:9.5,colors:['#0a2002','#0e2e04','#061400'],opacity:1.0},
+  ];
+
+  var finalHTML='';
+  rows.forEach(function(row,ri){
+    var rng=seededRand(42+ri*13);
+    finalHTML+='<g opacity="'+row.opacity+'">';
+    var x=rng()*15;
+    while(x<1010){
+      var n=2+Math.floor(rng()*3);
+      var color=row.colors[Math.floor(rng()*row.colors.length)];
+      var sw=row.minW+rng()*(row.maxW-row.minW);
+      var baseX=x+(rng()-.5)*3;
+      for(var i=0;i<n;i++){
+        var h=row.minH+rng()*(row.maxH-row.minH);
+        var ox=(i-(n-1)/2)*(2.2+rng()*2.2);
+        var lean=(rng()-.5)*h*0.62;
+        var cx=baseX+ox+(rng()-.5)*2;
+        var cy=row.yMin+rng()*(row.yMax-row.yMin);
+        var qx=(cx+lean*.42).toFixed(1);
+        var qy=(cy-h*.52).toFixed(1);
+        var ex=(cx+lean).toFixed(1);
+        var ey=(cy-h).toFixed(1);
+        finalHTML+='<path d="M'+cx.toFixed(1)+','+cy+' Q'+qx+','+qy+' '+ex+','+ey+'" stroke="'+color+'" stroke-width="'+sw.toFixed(2)+'" fill="none" stroke-linecap="round"/>';
+      }
+      var gap=10+rng()*26+Math.sin(x*0.04)*5;
+      x+=gap;
+    }
+    finalHTML+='</g>';
+  });
+  g.innerHTML=finalHTML;
+
+  // Fleurs
+  var rngF=seededRand(77);
+  var fc=['#f8e040','#f8a0c0','#ffffff','#ffb0d0','#ffe090'];
+  var fh='';
+  for(var i=0;i<180;i++){
+    var fx=rngF()*1000;
+    var fy=408+rngF()*600;
+    var fr=0.7+rngF()*1.9;
+    fh+='<circle cx="'+fx.toFixed(1)+'" cy="'+fy.toFixed(1)+'" r="'+fr.toFixed(1)+'" fill="'+fc[Math.floor(rngF()*fc.length)]+'"/>';
+  }
+  fg.innerHTML=fh;
+})();
+</script>
+
+<!-- ViewBox adaptatif + animation intro zoom église → vue complète -->
+<script>
+(function(){
+  var svg = document.getElementById('landscapeSvg');
+  if(!svg) return;
+
+  // Activer la promotion GPU sur le conteneur SVG pour éviter les saccades
+  svg.style.willChange = 'auto';
+  svg.parentElement.style.willChange = 'transform';
+
+  // ── Calcule le viewBox cible selon le ratio de l'écran ──────────
+  function targetViewBox(){
+    var W = window.innerWidth  || document.documentElement.clientWidth  || screen.width;
+    var H = window.innerHeight || document.documentElement.clientHeight || screen.height;
+    var ratio = W / H;
+    var vbW = 1000;
+    var vbH = vbW / ratio; // pas d'arrondi — valeurs flottantes pour la fluidité
+    var islandY = 1083;
+    var vbY = Math.max(0, Math.min(2167 - vbH, islandY - vbH * 0.5));
+    return { x:0, y:vbY, w:vbW, h:vbH };
+  }
+
+  // ── Animation intro : gros plan église → vue finale ─────────────
+  var CHURCH_X = 500, CHURCH_Y = 1037;
+
+  // Calculer le viewBox de départ une seule fois et le mettre en cache
+  var tv = targetViewBox();
+  var startW = tv.w * 0.18;
+  var startH = startW * (tv.h / tv.w);
+  var startX = CHURCH_X - startW / 2;
+  var startY = CHURCH_Y - startH / 2;
+
+  // Appliquer le viewBox de départ avec des décimales (plus fluide)
+  function setVB(x,y,w,h){
+    svg.setAttribute('viewBox',
+      x.toFixed(2)+' '+y.toFixed(2)+' '+w.toFixed(2)+' '+h.toFixed(2));
+  }
+
+  // Double rAF : laisse le WebView Android se stabiliser (dimensions réelles)
+  requestAnimationFrame(function(){
+  requestAnimationFrame(function(){
+    // Recalculer avec les vraies dimensions maintenant disponibles
+    var tv2 = targetViewBox();
+    startW = tv2.w * 0.18;
+    startH = startW * (tv2.h / tv2.w);
+    startX = CHURCH_X - startW / 2;
+    startY = CHURCH_Y - startH / 2;
+    setVB(startX, startY, startW, startH);
+
+    // ── Easing: easeInOutCubic ─────────────────────────────────────
+    function ease(t){ return t<0.5 ? 4*t*t*t : 1-Math.pow(-2*t+2,3)/2; }
+    function lerp(a,b,t){ return a+(b-a)*t; }
+
+    var DURATION = 3200;
+    var HOLD     = 800;
+    var startTime = null;
+    var animDone = false;
+
+    // Mettre en cache le viewBox cible (recalculé une seule fois par frame)
+    var cachedTV = targetViewBox();
+
+    function animate(ts){
+      if(animDone) return;
+      if(!startTime) startTime = ts;
+      var elapsed = ts - startTime;
+
+      if(elapsed < HOLD){
+        requestAnimationFrame(animate);
+        return;
+      }
+
+      var progress = Math.min((elapsed - HOLD) / DURATION, 1);
+      var ep = ease(progress);
+
+      var cx = lerp(CHURCH_X, cachedTV.x + cachedTV.w/2, ep);
+      var cy = lerp(CHURCH_Y, cachedTV.y + cachedTV.h/2, ep);
+      var w  = lerp(startW,   cachedTV.w, ep);
+      var h  = lerp(startH,   cachedTV.h, ep);
+
+      setVB(cx - w/2, cy - h/2, w, h);
+
+      if(progress >= 1){
+        animDone = true;
+        svg.style.willChange = 'auto';
+        svg.parentElement.style.willChange = 'auto';
+        window.addEventListener('resize', function(){
+          var v=targetViewBox();
+          setVB(v.x, v.y, v.w, v.h);
+        });
+        var game = document.querySelector('.game');
+        if(game) game.style.opacity = '1';
+        return;
+      }
+      requestAnimationFrame(animate);
+    }
+
+    requestAnimationFrame(animate);
+  }); // fin double rAF
+  }); // fin double rAF outer
+})();
+</script>
+
+<!-- Aurores boréales cinématiques -->
+<svg class="aurora" viewBox="0 0 1200 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+  <defs>
+    <filter id="aBlur1"><feGaussianBlur stdDeviation="28"/></filter>
+    <filter id="aBlur2"><feGaussianBlur stdDeviation="40"/></filter>
+    <filter id="aBlur3"><feGaussianBlur stdDeviation="20"/></filter>
+  </defs>
+  <!-- Couche verte profonde -->
+  <path d="M-100,320 Q100,80 300,180 Q500,280 700,60 Q900,-60 1100,120 Q1200,180 1300,80 L1300,0 L-100,0 Z" fill="rgba(20,160,80,.22)" filter="url(#aBlur2)"/>
+  <!-- Voile violet -->
+  <path d="M-50,360 Q150,120 400,220 Q650,300 850,100 Q1000,0 1200,160 L1200,0 L-50,0 Z" fill="rgba(100,30,180,.18)" filter="url(#aBlur2)"/>
+  <!-- Filaments verts -->
+  <path d="M0,280 Q80,100 200,160 Q320,220 440,80 Q560,-20 680,100 Q800,200 920,60 Q1040,-40 1200,100 L1200,0 L0,0 Z" fill="rgba(40,220,120,.14)" filter="url(#aBlur1)"/>
+  <!-- Accent teal -->
+  <path d="M200,350 Q350,150 500,240 Q650,320 800,140 Q950,20 1100,180 L1200,180 L1200,0 L200,0 Z" fill="rgba(0,200,180,.1)" filter="url(#aBlur3)"/>
+  <!-- Filament lumineux fin -->
+  <path d="M100,200 Q250,40 400,120 Q550,200 700,40 Q850,-60 1000,80 Q1100,140 1200,60" fill="none" stroke="rgba(80,255,160,.12)" stroke-width="60" filter="url(#aBlur1)"/>
+</svg>
+
+<div class="combo-flash" id="comboFlash"></div>
+
+<div class="game">
+
+<!-- MENU -->
+    <div id="menuScreen" class="screen active">
+        <button class="sound-toggle" id="soundToggle" onclick="toggleSound()">🔇</button>
+
+        <div class="game-title">
+            <h1>🇸🇮 Apprendre le slovène</h1>
+            <p>Dobrodošli ! Choisissez un mode</p>
+        </div>
+
+        <div class="streak-banner hidden" id="streakBanner">🔥 Série de <span id="streakCount">0</span> — continuez !</div>
+
+        <div class="global-progress" id="globalProgress" style="display:none">
+            <div class="global-progress-label"><span>Progression globale</span><span id="globalPct">0%</span></div>
+            <div class="global-bar"><div class="global-fill" id="globalFill" style="width:0%"></div></div>
+        </div>
+
+        <div class="mode-grid">
+            <!-- Ligne 1 : Défi journalier + Révision côte à côte -->
+            <div class="defi-card mode-card" onclick="startDefi()" style="grid-column:auto">
+                <span class="mode-jp">🏆</span>
+                <div><h3>Défi Journalier</h3><p id="defiCardDesc">Nouveau défi chaque jour</p></div>
+                <div class="defi-shine"></div>
+                <div id="defiDoneBadge" class="defi-done-badge" style="display:none">✓ Complété</div>
+                <div id="defiStreakBadge" class="defi-streak-badge" style="display:none"></div>
+            </div>
+            <div class="mode-card" onclick="startReview()" id="reviewCard" style="display:none">
+                <span class="mode-jp">🔁</span><h3>Révision</h3><p id="reviewCount">Retravailler les erreurs</p>
+            </div>
+            <!-- Quand révision cachée, défi prend toute la largeur via JS -->
+            <div class="mode-card" onclick="chooseDirScreen('vocab')">
+                <span class="mode-jp">📖</span><h3>Vocabulaire</h3><p>Mots essentiels</p>
+            </div>
+            <div class="mode-card" onclick="chooseDirScreen('phrases')">
+                <span class="mode-jp">💬</span><h3>Phrases</h3><p>Expressions du quotidien</p>
+            </div>
+            <div class="mode-card" onclick="chooseDirScreen('mixed')">
+                <span class="mode-jp">🎲</span><h3>Mixte</h3><p>Vocab + Phrases</p>
+            </div>
+            <div class="mode-card" onclick="chooseReconstructDir()">
+                <span class="mode-jp">🧩</span><h3>Reconstruire</h3><p>Formez la phrase</p>
+            </div>
+            <!-- Ligne : Dictée + Traducteur côte à côte -->
+            <div class="mode-card" onclick="chooseDicteeDir()">
+                <span class="mode-jp">👂</span><h3>Dictée</h3><p>Écoutez, écrivez les mots</p>
+            </div>
+            <div class="mode-card" onclick="showTranslator()" style="border-color:rgba(82,190,128,.4);background:linear-gradient(135deg,rgba(26,188,156,.15),rgba(82,190,128,.08))">
+                <span class="mode-jp">🌐</span>
+                <h3>Traducteur</h3><p>FR ↔ SL</p>
+            </div>
+        </div>
+
+        <!-- Catégories -->
+        <div style="margin-top:8px;margin-bottom:16px">
+          <div style="font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;text-align:center">📂 Par catégorie</div>
+          <div id="catGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px"></div>
+        </div>
+
+        <!-- Paysage slovène intégré: Triglav + Lac Bled -->
+    </div>
+
+<!-- DIRECTION PICKER -->
+<div id="dirScreen" class="screen">
+  <button class="btn-back" onclick="goMenu()">← Retour menu</button>
+  <div class="dir-screen">
+    <div class="dir-title" id="dirTitle">Choisir le sens</div>
+    <div class="dir-subtitle">Comment voulez-vous vous entraîner ?</div>
+    <div class="dir-grid">
+      <div class="dir-card" onclick="startGame(pendingMode,'sl2fr')">
+        <span class="dir-card-icon">🇸🇮→?</span>
+        <h3>Slovène → Français</h3>
+        <p>Voir le mot slovène, trouver sa traduction</p>
+        <span class="dir-card-badge">🔤</span>
+      </div>
+      <div class="dir-card" onclick="startGame(pendingMode,'fr2sl')">
+        <span class="dir-card-icon">?→🇸🇮</span>
+        <h3>Français → Slovène</h3>
+        <p>Voir la traduction, trouver le mot slovène</p>
+        <span class="dir-card-badge">🔍</span>
+      </div>
+      <div class="dir-card" onclick="startGame(pendingMode,'random')">
+        <span class="dir-card-icon">🎲</span>
+        <div><h3>Mélanger les deux sens</h3><p>Questions aléatoires dans les deux directions</p></div>
+      </div>
+      <div class="dir-card" id="learnDirBtn" onclick="startLearn(_pendingCat)" style="display:none;border-color:rgba(82,190,128,.5);background:linear-gradient(135deg,rgba(82,190,128,.12),rgba(26,188,156,.08))">
+        <span class="dir-card-icon">📚</span>
+        <div><h3>Apprendre</h3><p>Parcourir tous les mots — clic pour révéler la traduction</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="quizScreen" class="screen">
+  <button class="btn-back" onclick="goMenu()">← Retour menu</button>
+  <div class="quiz-header">
+    <span class="quiz-mode-lbl" id="modeLbl"></span>
+    <div class="streak-display" id="streakDisplay">🔥 <span id="streakNum">0</span></div>
+    <div class="lives" id="livesDisplay"></div>
+    <span class="score-lbl" id="scoreLbl">0 pts</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="char-card-wrap">
+    <div class="char-card" id="charCard">
+      <button class="speak-btn" onclick="speakCurrent()">🔊 Écouter</button>
+      <div class="main-char" id="mainChar"></div>
+      <div style="font-size:12px;color:var(--aurora-teal);margin-top:6px;font-family:'Courier New',monospace;letter-spacing:0.5px;background:rgba(26,188,156,0.08);border-radius:6px;padding:3px 8px;display:inline-block;cursor:pointer;transition:background .15s" id="charHint" onclick="showPhoneticModal()" title="Cliquez pour le guide de prononciation"></div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:4px;font-style:italic" id="examplePhrase"></div>
+    </div>
+  </div>
+  <div class="options-grid" id="optionsGrid"></div>
+  <div class="feedback" id="feedback"></div>
+  <button class="next-btn" id="nextBtn" onclick="nextQuestion()">Question suivante →</button>
+</div>
+
+<!-- DIRECTION PICKER — RECONSTRUIRE -->
+<div id="reconstructDirScreen" class="screen">
+  <button class="btn-back" onclick="goMenu()">← Retour menu</button>
+  <div class="dir-screen">
+    <div class="dir-title">🧩 Reconstruire</div>
+    <div class="dir-subtitle">Dans quel sens voulez-vous reconstruire ?</div>
+    <div class="dir-grid">
+      <div class="dir-card" onclick="startReconstruct('fr2sl')">
+        <span class="dir-card-icon">🇫🇷→🇸🇮</span>
+        <h3>Français → Slovène</h3>
+        <p>Voir la phrase française, reconstruire en slovène</p>
+        <span class="dir-card-badge">🔤</span>
+      </div>
+      <div class="dir-card" onclick="startReconstruct('sl2fr')">
+        <span class="dir-card-icon">🇸🇮→🇫🇷</span>
+        <h3>Slovène → Français</h3>
+        <p>Voir la phrase slovène, reconstruire en français</p>
+        <span class="dir-card-badge">🔍</span>
+      </div>
+      <div class="dir-card dir-random" onclick="startReconstruct('random')">
+        <span class="dir-card-icon">🎲</span>
+        <div><h3>Mélanger les deux sens</h3><p>Direction aléatoire à chaque question</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RECONSTRUIRE -->
+<div id="reconstructScreen" class="screen">
+  <button class="btn-back" onclick="goMenu()">← Retour menu</button>
+  <div class="quiz-header">
+    <span class="quiz-mode-lbl" id="rModeLbl">🧩 Reconstruire</span>
+    <div class="lives" id="rLivesDisplay"></div>
+    <span class="score-lbl" id="rScoreLbl">0 pts</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="rProgressFill" style="width:0%"></div></div>
+  <div class="char-card-wrap">
+    <div class="char-card">
+      <button class="speak-btn" onclick="speakReconstruct()">🔊 Écouter</button>
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px" id="rInstruction">Reconstituez la phrase en slovène :</div>
+      <div id="rTranslation" style="font-size:18px;font-weight:700;line-height:1.4;color:var(--snow);text-align:center"></div>
+      <div id="rHint" style="font-size:11px;color:var(--aurora-teal);font-family:'Courier New',monospace;margin-top:5px;text-align:center;opacity:0;transition:opacity .3s;background:rgba(26,188,156,0.08);border-radius:6px;padding:2px 8px;display:inline-block"></div>
+    </div>
+  </div>
+  <div class="reconstruct-zone">
+    <div class="reconstruct-slots" id="reconstructSlots">
+      <span style="font-size:13px;color:var(--text-muted);font-style:italic">Cliquez les mots pour former la phrase…</span>
+    </div>
+  </div>
+  <div class="word-bank-label">Mots disponibles — cliquez pour placer :</div>
+  <div class="word-bank" id="wordBank"></div>
+  <div class="feedback" id="rFeedback"></div>
+  <button class="btn-red" id="rCheckBtn" onclick="checkReconstruct()" style="display:none">Vérifier ✓</button>
+  <button class="next-btn" id="rNextBtn" onclick="nextReconstructQ()">Question suivante →</button>
+</div>
+
+<!-- DIRECTION PICKER — DICTEE -->
+<div id="dicteeDirScreen" class="screen">
+  <button class="btn-back" onclick="goMenu()">← Retour menu</button>
+  <div class="dir-screen">
+    <div class="dir-title">👂 Dictée</div>
+    <div class="dir-subtitle">Quel type de dictée ?</div>
+    <div class="dir-grid">
+      <div class="dir-card" onclick="startDictee('mots')">
+        <span class="dir-card-icon">🔤</span>
+        <h3>Mots du vocab</h3>
+        <p>Écoutez un mot, cliquez les lettres</p>
+        <span class="dir-card-badge">📖</span>
+      </div>
+      <div class="dir-card" onclick="startDictee('phrases')">
+        <span class="dir-card-icon">💬</span>
+        <h3>Phrases</h3>
+        <p>Écoutez une phrase, cliquez les mots</p>
+        <span class="dir-card-badge">💬</span>
+      </div>
+      <div class="dir-card dir-random" onclick="startDictee('mixte')">
+        <span class="dir-card-icon">🎲</span>
+        <div><h3>Mixte</h3><p>Vocab + Phrases mélangés</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DICTÉE — ecran principal -->
+<div id="dicteeScreen" class="screen">
+  <button class="btn-back" onclick="goMenu()">← Retour menu</button>
+  <div class="quiz-header">
+    <span class="quiz-mode-lbl" id="dModeLbl">👂 Dictée</span>
+    <div class="lives" id="dLivesDisplay"></div>
+    <span class="score-lbl" id="dScoreLbl">0 pts</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="dProgressFill" style="width:0%"></div></div>
+
+  <div class="char-card-wrap">
+    <div class="char-card" style="text-align:center">
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;align-items:center">
+        <button class="speak-btn" onclick="playDicteeAudio()" style="font-size:16px;padding:12px 24px">🔊 Écouter</button>
+        <input type="range" id="dicteeSpeedSlider" min="0.3" max="1.2" step="0.05" value="0.65" oninput="changeDicteeSpeed()" style="width:80px;accent-color:var(--aurora-teal)" title="Régler la vitesse"/>
+        <span id="dicteeSpeedLbl" style="font-size:13px;font-weight:700;color:var(--aurora-teal);min-width:32px">0.65x</span>
+      </div>
+      <div style="font-size:10px;color:var(--text-muted);margin-top:8px;font-style:italic">Écoutez puis composez la réponse ci-dessous</div>
+    </div>
+  </div>
+
+  <!-- Zone réponse (slots) -->
+  <div class="reconstruct-zone">
+    <div class="reconstruct-slots" id="dicteeSlots">
+      <span style="font-size:13px;color:var(--text-muted);font-style:italic">Cliquez pour composer votre réponse…</span>
+    </div>
+  </div>
+
+  <!-- Banque de mots -->
+  <div class="word-bank-label">Mots / lettres disponibles :</div>
+  <div class="word-bank" id="dicteeBank"></div>
+
+  <div class="feedback" id="dFeedback"></div>
+  <button class="btn-red" id="dCheckBtn" onclick="checkDictee()" style="display:none">Vérifier ✓</button>
+  <button class="next-btn" id="dNextBtn" onclick="nextDicteeQ()">Question suivante →</button>
+</div>
+
+<!-- DÉFI JOURNALIER -->
+<div id="defiScreen" class="screen">
+  <button class="btn-back" onclick="goMenu()">← Retour menu</button>
+  <div class="defi-header">
+    <h2>🏆 Défi Journalier</h2>
+    <p id="defiDateLbl"></p>
+    <div class="defi-countdown" id="defiCountdown">⏳ Prochain défi dans <span id="defiTimer">--:--:--</span></div>
+  </div>
+  <div class="defi-steps" id="defiSteps"></div>
+  <div class="defi-phase-lbl" id="defiPhaseLbl">PHASE 1</div>
+  <div id="defiQuizZone">
+    <div class="quiz-header">
+      <span class="quiz-mode-lbl" id="defiModeLbl">Défi</span>
+      <div class="lives" id="defiLivesDisplay"></div>
+      <span class="score-lbl" id="defiScoreLbl">0 pts</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="defiProgressFill" style="width:0%"></div></div>
+    <div class="char-card-wrap">
+      <div class="char-card" id="defiCharCard">
+        <button class="speak-btn" onclick="speakDefi()">🔊 Écouter</button>
+        <div class="main-char" id="defiMainChar"></div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:6px" id="defiHint"></div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px;font-style:italic" id="defiEx"></div>
+      </div>
+    </div>
+    <div class="options-grid" id="defiOptionsGrid"></div>
+    <div class="feedback" id="defiFeedback"></div>
+    <button class="next-btn" id="defiNextBtn" onclick="nextDefiQuestion()">Question suivante →</button>
+  </div>
+  <div id="defiAlreadyDone" style="display:none">
+    <div class="defi-already-done">
+      <div class="big-check">✅</div>
+      <h3>Défi du jour terminé !</h3>
+      <p>Revenez demain pour un nouveau défi.</p>
+    </div>
+    <div class="defi-history" id="defiHistory"></div>
+    <button class="btn-ghost" onclick="goMenu()">← Retour au menu</button>
+  </div>
+</div>
+
+<!-- RÉSULTAT DÉFI -->
+<div id="defiResultScreen" class="screen">
+  <div class="defi-result-wrap">
+    <div class="defi-trophy" id="defiTrophy">🏆</div>
+    <div class="defi-stars" id="defiStarsRow"><span>⭐</span><span>⭐</span><span>⭐</span></div>
+    <div class="result-msg" id="defiResultMsg"></div>
+    <div class="result-sub" id="defiResultSub" style="margin-bottom:.75rem"></div>
+    <div class="score-circle" style="margin-bottom:.85rem">
+      <span class="big-score" id="defiFinalScore"></span>
+      <span class="score-total" id="defiFinalTotal"></span>
+    </div>
+    <div class="defi-xp-bar">
+      <div class="xp-label"><span>✨ XP gagné</span><span id="defiXpGained">+0 XP</span></div>
+      <div class="defi-xp-fill-wrap"><div class="defi-xp-fill" id="defiXpFill"></div></div>
+      <div style="font-size:11px;color:var(--text-muted);margin-top:4px;text-align:right" id="defiTotalXp"></div>
+    </div>
+    <div class="defi-badges" id="defiBadgesRow"></div>
+    <div class="defi-history" id="defiResultHistory" style="margin-bottom:.85rem"></div>
+    <button class="btn-red" onclick="goMenu()">← Retour au menu</button>
+  </div>
+</div>
+
+<!-- RÉSULTATS -->
+<div id="resultsScreen" class="screen">
+  <button class="btn-back" onclick="goMenu()">← Retour menu</button>
+  <div class="results">
+    <div class="result-emoji" id="resultEmoji">⭐</div>
+    <div class="score-circle">
+      <span class="big-score" id="finalScore"></span>
+      <span class="score-total" id="finalTotal"></span>
+    </div>
+    <div class="result-msg" id="resultMsg"></div>
+    <div class="result-sub" id="resultSub"></div>
+    <div class="stats-grid">
+      <div class="stat-box"><div class="stat-val" id="stCorrect">0</div><div class="stat-lbl">corrects</div></div>
+      <div class="stat-box"><div class="stat-val" id="stWrong">0</div><div class="stat-lbl">erreurs</div></div>
+      <div class="stat-box"><div class="stat-val" id="stPct">0%</div><div class="stat-lbl">réussite</div></div>
+    </div>
+    <div class="perf-chart" id="perfChart" style="display:none">
+      <h4>Performance par question</h4>
+      <div class="perf-bars" id="perfBars"></div>
+    </div>
+    <div class="wrong-list" id="wrongList"></div>
+    <button class="btn-red" id="replayBtn" onclick="replayLast()">Rejouer</button>
+    <button class="btn-ghost" onclick="goMenu()">← Changer de mode</button>
+  </div>
+</div>
+
+<!-- TRADUCTEUR FR ↔ SL -->
+<div id="translatorScreen" class="screen">
+  <button class="btn-back" onclick="goMenu()">← Retour menu</button>
+  <div class="trad-screen">
+
+    <!-- Barre de langues avec bouton inversion -->
+    <div class="trad-lang-bar">
+      <div class="trad-lang-label" id="tradSrcLabel">🇫🇷 Français</div>
+      <button class="trad-swap-btn" onclick="swapTradLang()" title="Inverser les langues">⇄</button>
+      <div class="trad-lang-label" id="tradDstLabel">🇸🇮 Slovène</div>
+    </div>
+
+    <!-- Zone de saisie -->
+    <div class="trad-box">
+      <div class="trad-box-label" id="tradInputLabel">Texte à traduire</div>
+      <textarea id="tradInput" placeholder="Écrivez ici ou utilisez le micro…" rows="3" oninput="onTradInput()"></textarea>
+      <div class="trad-box-actions">
+        <button class="trad-mic-btn" id="tradMicBtn" onclick="toggleTradMic()">🎤 Dicter</button>
+        <button class="trad-action-btn" onclick="clearTradInput()">✕ Effacer</button>
+        <button class="trad-action-btn" onclick="speakTrad('input')">🔊 Écouter</button>
+      </div>
+    </div>
+
+    <!-- Bouton traduire -->
+    <button class="trad-translate-btn" id="tradBtn" onclick="doTranslate()" disabled>
+      <span>🌐</span><span>Traduire</span>
+    </button>
+
+    <!-- Zone résultat -->
+    <div class="trad-result-box" id="tradResultBox">
+      <div class="trad-box-label" id="tradOutputLabel">Traduction</div>
+      <div class="trad-result-placeholder" id="tradPlaceholder">La traduction apparaîtra ici…</div>
+      <div class="trad-result-text" id="tradResult" style="display:none"></div>
+      <div class="trad-result-hint" id="tradResultHint" style="display:none"></div>
+      <div class="trad-box-actions" id="tradResultActions" style="display:none">
+        <button class="trad-action-btn" onclick="speakTrad('output')">🔊 Écouter</button>
+        <button class="trad-action-btn" onclick="copyTradResult()">📋 Copier</button>
+      </div>
+    </div>
+
+    <!-- Suggestions rapides -->
+    <div style="margin-top:4px">
+      <div style="font-size:10px;color:var(--text-muted);text-align:center;margin-bottom:5px;letter-spacing:.8px;text-transform:uppercase">Essayez…</div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px;justify-content:center" id="tradSuggestions"></div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- CHOIX DIRECTION — APPRENDRE -->
+<div id="learnDirScreen" class="screen">
+  <button class="btn-back" onclick="goMenu()">← Retour menu</button>
+  <div class="learn-dir-screen">
+    <h2 id="learnCatTitle">📂 Catégorie</h2>
+    <p>Comment veux-tu apprendre ?</p>
+    <div class="learn-dir-grid">
+      <div class="learn-dir-card" onclick="startLearnMode('sl')">
+        <div class="learn-dir-card-icon">🇸🇮</div>
+        <h3>Slovène</h3>
+        <p>Vois le mot slovène, clique pour révéler le français</p>
+      </div>
+      <div class="learn-dir-card" onclick="startLearnMode('fr')">
+        <div class="learn-dir-card-icon">🇫🇷</div>
+        <h3>Français</h3>
+        <p>Vois le mot français, clique pour révéler le slovène</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ÉCRAN APPRENDRE -->
+<div id="learnScreen" class="screen">
+  <div class="learn-screen-header">
+    <button class="btn-back" style="margin-bottom:0" onclick="showScreen('learnDirScreen')">←</button>
+    <h2 id="learnScreenTitle">📂 Catégorie</h2>
+    <button class="btn-back" style="margin-bottom:0;margin-left:auto" onclick="goMenu()">Menu</button>
+  </div>
+  <div class="learn-dir-lbl" id="learnDirLabel"></div>
+  <div class="learn-grid" id="learnGrid"></div>
+</div>
+
+</div><!-- .game -->
+
+    <script>
+(function() {
+  var allData = {};
+
+  if (window._AUDIO_DATA_VOCAB) Object.assign(allData, window._AUDIO_DATA_VOCAB);
+  if (window._AUDIO_DATA_VERBES) Object.assign(allData, window._AUDIO_DATA_VERBES);
+
+  ['AUDIO_MAP','MP3_MAP','audioMap','mp3Map'].forEach(function(n) {
+    if (!window[n]) window[n] = {};
+    if (typeof window[n] === 'object') {
+      Object.keys(allData).forEach(function(k) {
+        if (allData[k].indexOf('data:') === 0) window[n][k] = allData[k];
+      });
+    }
+  });
+
+  function lu(src) {
+    if (!src || typeof src !== 'string') return null;
+    var b = '';
+    try { b = decodeURIComponent(src); } catch(e) { b = src; }
+    b = b.replace(/\?.*$/, '').replace(/.*[\/]/, '').replace(/\.[^.]+$/, '');
+    if (!b) return null;
+    var k = b.toLowerCase().replace(/_/g, ' ');
+    return allData[b] || allData[b.toLowerCase()] || allData[b.replace(/_/g, ' ')] || allData[k] || null;
+  }
+
+  var OrigAudio = window.Audio;
+  window.Audio = function(src) {
+    var d = lu(src);
+    var inst = d ? new OrigAudio(d) : (src !== undefined ? new OrigAudio(src) : new OrigAudio());
+    return inst;
+  };
+  window.Audio.prototype = OrigAudio.prototype;
+
+  var srcProp = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, 'src');
+  if (srcProp && srcProp.set) {
+    var origSet = srcProp.set;
+    Object.defineProperty(HTMLMediaElement.prototype, 'src', {
+      set: function(v) {
+        var d = lu(v);
+        origSet.call(this, d || v);
+      },
+      get: srcProp.get,
+      configurable: true
+    });
+  }
+})();
+</script>
+    <script>
+// ══════════════════════════════════════════════════════════
+// DONNEES SLOVENIENNES
+// ══════════════════════════════════════════════════════════
+
+const VOCAB = [
+
+  // 🌿 Nature
+  { q: 'gora', a: '⛰️ montagne', hint: '/góra/', ex: 'Gora je visoka.', cat: 'Nature' },
+  { q: 'reka', a: '🌊 rivière', hint: '/réka/', ex: 'Reka teče skozi mesto.', cat: 'Nature' },
+  { q: 'jezero', a: '🏞️ lac', hint: '/jézero/', ex: 'Blejsko jezero je lepo.', cat: 'Nature' },
+  { q: 'gozd', a: '🌲 forêt', hint: '/gózd/', ex: 'Slovenci imajo radi gozdove.', cat: 'Nature' },
+  { q: 'cvet', a: '🌸 fleur', hint: '/tsvét/', ex: 'Cvet diši.', cat: 'Nature' },
+  { q: 'drevo', a: '🌳 arbre', hint: '/drévo/', ex: 'Drevo je staro.', cat: 'Nature' },
+  { q: 'trava', a: '🌿 herbe', hint: '/tráva/', ex: 'Trava je zelena.', cat: 'Nature' },
+  { q: 'dež', a: '🌧️ pluie', hint: '/déš/', ex: 'Danes pada dež.', cat: 'Nature' },
+  { q: 'veter', a: '💨 vent', hint: '/véter/', ex: 'Veter piha močno.', cat: 'Nature' },
+  { q: 'oblak', a: '☁️ nuage', hint: '/óblak/', ex: 'Oblaki so sivi.', cat: 'Nature' },
+  { q: 'sonce', a: '☀️ soleil', hint: '/sónce/', ex: 'Sonce sije.', cat: 'Nature' },
+  { q: 'luna', a: '🌙 lune', hint: '/lúna/', ex: 'Luna sveti ponoči.', cat: 'Nature' },
+  { q: 'sneg', a: '🧊 neige', hint: '/snég/', ex: 'Sneg je padel.', cat: 'Nature' },
+  { q: 'morje', a: '🌊 mer', hint: '/mórje/', ex: 'Primorska ima lepo morje.', cat: 'Nature' },
+  { q: 'skala', a: '🪨 rocher', hint: '/skála/', ex: 'Skala je trdna.', cat: 'Nature' },
+
+  // 🐻 Animaux
+  { q: 'pes', a: '🐶 chien', hint: '/pés/', ex: 'Moj pes je prijazen.', cat: 'Animaux' },
+  { q: 'mačka', a: '🐱 chat', hint: '/máchka/', ex: 'Mačka spi na stolu.', cat: 'Animaux' },
+  { q: 'konj', a: '🐴 cheval', hint: '/kónj/', ex: 'Konj teče hitro.', cat: 'Animaux' },
+  { q: 'krava', a: '🐄 vache', hint: '/kráva/', ex: 'Krava da mleko.', cat: 'Animaux' },
+  { q: 'ptica', a: '🐦 oiseau', hint: '/ptíca/', ex: 'Ptica poje na drevesu.', cat: 'Animaux' },
+  { q: 'riba', a: '🐟 poisson', hint: '/ríba/', ex: 'Lovimo ribe.', cat: 'Animaux' },
+  { q: 'zajec', a: '🐰 lapin', hint: '/zájec/', ex: 'Zajec skače po travi.', cat: 'Animaux' },
+  { q: 'medved', a: '🐻 ours', hint: '/méved/', ex: 'Medved živi v gozdu.', cat: 'Animaux' },
+  { q: 'volk', a: '🐺 loup', hint: '/vólk/', ex: 'Volk tuli v luni.', cat: 'Animaux' },
+  { q: 'sova', a: '🦉 hibou', hint: '/sóva/', ex: 'Sova leti ponoči.', cat: 'Animaux' },
+  { q: 'metulj', a: '🦋 papillon', hint: '/métulj/', ex: 'Metulj je lep.', cat: 'Animaux' },
+  { q: 'kača', a: '🐍 serpent', hint: '/kàča/', ex: 'Kača je nevarna.', cat: 'Animaux' },
+  { q: 'lisica', a: '🦊 renard', hint: '/lísica/', ex: 'Lisica je zvita.', cat: 'Animaux' },
+
+  // 🗓️ Temps
+  { q: 'vedno', a: '🔄 toujours', hint: '/védno/', ex: 'Vedno je vesel.', cat: 'Temps' },
+  { q: 'nikoli', a: '🚫 jamais', hint: '/níkoli/', ex: 'Nikoli ne zamujam.', cat: 'Temps' },
+  { q: 'včasih', a: '🔁 parfois', hint: '/vtčásih/', ex: 'Včasih dežuje poleti.', cat: 'Temps' },
+  { q: 'ponedeljek', a: '📆 lundi', hint: '/ponedéljek/', ex: 'Začnemo v ponedeljek.', cat: 'Temps' },
+  { q: 'torek', a: '📆 mardi', hint: '/tórek/', ex: 'Sestanek je v torek.', cat: 'Temps' },
+  { q: 'sreda', a: '📆 mercredi', hint: '/sréda/', ex: 'Sreda je na sredini.', cat: 'Temps' },
+  { q: 'četrtek', a: '📆 jeudi', hint: '/četrték/', ex: 'Četrtek je pred petkom.', cat: 'Temps' },
+  { q: 'petek', a: '📆 vendredi', hint: '/pétek/', ex: 'Petek je najboljši dan!', cat: 'Temps' },
+  { q: 'sobota', a: '📆 samedi', hint: '/sobóta/', ex: 'V soboto čistimo.', cat: 'Temps' },
+  { q: 'nedelja', a: '📆 dimanche', hint: '/nedélja/', ex: 'Nedelja je počitniška.', cat: 'Temps' },
+  { q: 'danes', a: "📅 aujourd'hui", hint: '/dánes/', ex: 'Danes je lep dan.', cat: 'Temps' },
+  { q: 'jutri', a: '📅 demain', hint: '/jútri/', ex: 'Jutri pridem domov.', cat: 'Temps' },
+  { q: 'včeraj', a: '📅 hier', hint: '/včeráj/', ex: 'Včeraj je deževalo.', cat: 'Temps' },
+
+  // 🍽️ Nourriture
+  { q: 'kruh', a: '🍞 pain', hint: '/krúh/', ex: 'Jemo kruh za zajtrk.', cat: 'Nourriture' },
+  { q: 'sir', a: '🧀 fromage', hint: '/síːr/', ex: 'Sir na kruhu.', cat: 'Nourriture' },
+  { q: 'jajce', a: '🥚 œuf', hint: '/jájce/', ex: 'Jajce za zajtrk.', cat: 'Nourriture' },
+  { q: 'piščanec', a: '🍗 poulet', hint: '/píščanec/', ex: 'Pečen piščanec.', cat: 'Nourriture' },
+  { q: 'krompir', a: '🥔 pomme de terre', hint: '/krompír/', ex: 'Krompir z maslom.', cat: 'Nourriture' },
+  { q: 'paradižnik', a: '🍅 tomate', hint: '/paradížnik/', ex: 'Rdeč paradižnik.', cat: 'Nourriture' },
+  { q: 'kumara', a: '🥒 concombre', hint: '/kúmara/', ex: 'Kumara v solati.', cat: 'Nourriture' },
+  { q: 'jabolko', a: '🍎 pomme', hint: '/jábólko/', ex: 'Zeleno jabolko.', cat: 'Nourriture' },
+  { q: 'banana', a: '🍌 banane', hint: '/banána/', ex: 'Rumena banana.', cat: 'Nourriture' },
+  { q: 'jagoda', a: '🍓 fraise', hint: '/jagóda/', ex: 'Jagode poleti!', cat: 'Nourriture' },
+  { q: 'kava', a: '☕ café', hint: '/káva/', ex: 'Skodelica kave.', cat: 'Nourriture' },
+  { q: 'čaj', a: '🍵 thé', hint: '/čáj/', ex: 'Pijem čaj zvečer.', cat: 'Nourriture' },
+  { q: 'sladoled', a: '🍦 glace', hint: '/sladóléd/', ex: 'Sladoled na soncu!', cat: 'Nourriture' },
+  { q: 'torta', a: '🎂 gâteau', hint: '/tórta/', ex: 'Torta za zabavo.', cat: 'Nourriture' },
+  { q: 'čokolada', a: '🍫 chocolat', hint: '/čokoláda/', ex: 'Temna čokolada je dobra.', cat: 'Nourriture' },
+  { q: 'voda', a: '💧 eau', hint: '/vóda/', ex: 'Kozarec vode.', cat: 'Nourriture' },
+  { q: 'vino', a: '🍷 vin', hint: '/víno/', ex: 'Slovensko vino je dobro.', cat: 'Nourriture' },
+  { q: 'pivo', a: '🍺 bière', hint: '/pívo/', ex: 'Laško pivo.', cat: 'Nourriture' },
+  { q: 'juha', a: '🍲 soupe', hint: '/júha/', ex: 'Topla juha.', cat: 'Nourriture' },
+  { q: 'sadje', a: '🍇 fruits', hint: '/sádje/', ex: 'Sveže sadje.', cat: 'Nourriture' },
+  { q: 'mleko', a: '🥛 lait', hint: '/mléko/', ex: 'Kozarec mleka.', cat: 'Nourriture' },
+
+  // 👨‍👩‍👧 Famille
+  { q: 'sestra', a: '👧 sœur', hint: '/séstra/', ex: 'Moja sestra živi v Mariboru.', cat: 'Famille' },
+  { q: 'brat', a: '👦 frère', hint: '/brat/', ex: 'Moj brat je starejši.', cat: 'Famille' },
+  { q: 'dedek', a: '👴 grand-père', hint: '/déděk/', ex: 'Dedek pripoveduje zgodbe.', cat: 'Famille' },
+  { q: 'babica', a: '👵 grand-mère', hint: '/bábica/', ex: 'Babica peče potico.', cat: 'Famille' },
+  { q: 'oče', a: '👨 père', hint: '/óče/', ex: 'Moj oče je učitelj.', cat: 'Famille' },
+  { q: 'mati', a: '👩 mère', hint: '/máti/', ex: 'Moja mati kuha večerjo.', cat: 'Famille' },
+  { q: 'stric', a: '👨 oncle', hint: '/stríc/', ex: 'Stric pride v nedeljo.', cat: 'Famille' },
+  { q: 'teta', a: '👩 tante', hint: '/téta/', ex: 'Teta živi v Ljubljani.', cat: 'Famille' },
+  { q: 'bratranec', a: '🧑 cousin', hint: '/bratránec/', ex: 'Moj bratranec je smešen.', cat: 'Famille' },
+  { q: 'dojenček', a: '👶 bébé', hint: '/dojénčěk/', ex: 'Dojenček spi.', cat: 'Famille' },
+  { q: 'družina', a: '👨‍👩‍👧 famille', hint: '/družína/', ex: 'Velika družina.', cat: 'Famille' },
+
+  // 🏙️ Lieux
+  { q: 'bolnišnica', a: '🏥 hôpital', hint: '/bolníšnica/', ex: 'Bolnišnica je velika.', cat: 'Lieux' },
+  { q: 'lekarna', a: '💊 pharmacie', hint: '/lékárna/', ex: 'Lekarna je odprta.', cat: 'Lieux' },
+  { q: 'knjižnica', a: '📚 bibliothèque', hint: '/knjížnica/', ex: 'Izposojam knjige v knjižnici.', cat: 'Lieux' },
+  { q: 'restavracija', a: '🍽️ restaurant', hint: '/restavrácija/', ex: 'Jemo v restavraciji.', cat: 'Lieux' },
+  { q: 'hotel', a: '🏨 hôtel', hint: '/hótél/', ex: 'Bivamo v hotelu.', cat: 'Lieux' },
+  { q: 'letališče', a: '✈️ aéroport', hint: '/letalíšče/', ex: 'Letališče je daleč.', cat: 'Lieux' },
+  { q: 'cerkev', a: '⛪ église', hint: '/cérkev/', ex: 'Cerkev je stara.', cat: 'Lieux' },
+  { q: 'park', a: '🌳 parc', hint: '/párk/', ex: 'Sprehajamo se po parku.', cat: 'Lieux' },
+  { q: 'trg', a: '🏛️ place publique', hint: '/trg/', ex: 'Tržnica je na trgu.', cat: 'Lieux' },
+  { q: 'avtobus', a: '🚌 bus', hint: '/avtóbús/', ex: 'Gremo z avtobusom.', cat: 'Lieux' },
+  { q: 'vlak', a: '🚂 train', hint: '/vlak/', ex: 'Vlak odpelje ob 10.', cat: 'Lieux' },
+  { q: 'avto', a: '🚗 voiture', hint: '/ávto/', ex: 'Avto je rdeč.', cat: 'Lieux' },
+  { q: 'kolo', a: '🚲 vélo', hint: '/kólo/', ex: 'Kolesarim v službo.', cat: 'Lieux' },
+  { q: 'čoln', a: '⛵ bateau', hint: '/čóln/', ex: 'Plujemo s čolnom.', cat: 'Lieux' },
+  { q: 'šola', a: '🏫 école', hint: '/šóla/', ex: 'Otroci gredo v šolo.', cat: 'Lieux' },
+  { q: 'most', a: '🌉 pont', hint: '/móst/', ex: 'Triglava most.', cat: 'Lieux' },
+  { q: 'trgovina', a: '🛒 magasin', hint: '/trgovína/', ex: 'Kupujemo v trgovini.', cat: 'Lieux' },
+
+  // 🎨 Couleurs
+  { q: 'rdeča', a: '🔴 rouge', hint: '/rdéča/', ex: 'Rdeč avto.', cat: 'Couleurs' },
+  { q: 'modra', a: '🔵 bleu(e)', hint: '/módra/', ex: 'Nebo je modro.', cat: 'Couleurs' },
+  { q: 'zelena', a: '🟢 vert(e)', hint: '/zeléna/', ex: 'Trava je zelena.', cat: 'Couleurs' },
+  { q: 'rumena', a: '🟡 jaune', hint: '/ruména/', ex: 'Sonce je rumeno.', cat: 'Couleurs' },
+  { q: 'črna', a: '⚫ noir(e)', hint: '/črna/', ex: 'Črna mačka.', cat: 'Couleurs' },
+  { q: 'bela', a: '⚪ blanc(he)', hint: '/béla/', ex: 'Sneg je bel.', cat: 'Couleurs' },
+  { q: 'rjava', a: '🟤 brun(e)', hint: '/rjáva/', ex: 'Medved je rjav.', cat: 'Couleurs' },
+  { q: 'siva', a: '🩶 gris(e)', hint: '/síva/', ex: 'Sivo nebo.', cat: 'Couleurs' },
+  { q: 'roza', a: '🌸 rose', hint: '/róza/', ex: 'Roza cvet.', cat: 'Couleurs' },
+  { q: 'vijolična', a: '💜 violet(te)', hint: '/vijolíčna/', ex: 'Vijolična obleka.', cat: 'Couleurs' },
+  { q: 'oranžna', a: '🟠 orange', hint: '/oránžna/', ex: 'Oranžna pomaranča.', cat: 'Couleurs' },
+
+  // 🔢 Chiffres
+  { q: 'ena', a: '1️⃣ un / une', hint: '/éna/', ex: 'En otrok.', cat: 'Chiffres' },
+  { q: 'dve', a: '2️⃣ deux', hint: '/dvé/', ex: 'Dve kavi.', cat: 'Chiffres' },
+  { q: 'tri', a: '3️⃣ trois', hint: '/trí/', ex: 'Trije dnevi.', cat: 'Chiffres' },
+  { q: 'štiri', a: '4️⃣ quatre', hint: '/štíri/', ex: 'Štirje letni časi.', cat: 'Chiffres' },
+  { q: 'pet', a: '5️⃣ cinq', hint: '/pét/', ex: 'Pet minut.', cat: 'Chiffres' },
+  { q: 'šest', a: '6️⃣ six', hint: '/šést/', ex: 'Šest jajc.', cat: 'Chiffres' },
+  { q: 'sedem', a: '7️⃣ sept', hint: '/sédom/', ex: 'Sedem dni v tednu.', cat: 'Chiffres' },
+  { q: 'osem', a: '8️⃣ huit', hint: '/ósem/', ex: 'Osem ur spanja.', cat: 'Chiffres' },
+  { q: 'devet', a: '9️⃣ neuf', hint: '/dévot/', ex: 'Devet mesecev.', cat: 'Chiffres' },
+  { q: 'deset', a: '🔟 dix', hint: '/désot/', ex: 'Deset evrov.', cat: 'Chiffres' },
+  { q: 'dvajset', a: '2️⃣0️⃣ vingt', hint: '/dvájsot/', ex: 'Dvajset let star.', cat: 'Chiffres' },
+  { q: 'trideset', a: '3️⃣0️⃣ trente', hint: '/trídot/', ex: 'Trideset minut.', cat: 'Chiffres' },
+  { q: 'sto', a: '💯 cent', hint: '/stó/', ex: 'Sto evrov.', cat: 'Chiffres' },
+  { q: 'tisoč', a: '🔢 mille', hint: '/tísoč/', ex: 'Tisoč ljudi.', cat: 'Chiffres' },
+
+  // 😊 Émotions
+  { q: 'žalosten', a: '😢 triste', hint: '/žalóston/', ex: 'Zakaj si žalosten?', cat: 'Émotions' },
+  { q: 'jezen', a: '😠 en colère', hint: '/jézon/', ex: 'On je jezen.', cat: 'Émotions' },
+  { q: 'prestrašen', a: '😨 effrayé(e)', hint: '/prestrášon/', ex: 'Prestrašen je teme.', cat: 'Émotions' },
+  { q: 'presenečen', a: '😲 surpris(e)', hint: '/presonéčen/', ex: 'Presenečen sem!', cat: 'Émotions' },
+  { q: 'lačen', a: '🍽️ affamé(e)', hint: '/láčen/', ex: 'Lačen sem.', cat: 'Émotions' },
+  { q: 'žejen', a: '🥤 assoiffé(e)', hint: '/žéjon/', ex: 'Žejen sem.', cat: 'Émotions' },
+  { q: 'bolan', a: '🤒 malade', hint: '/bólán/', ex: 'Danes sem bolan.', cat: 'Émotions' },
+  { q: 'zdrav', a: '💪 en bonne santé', hint: '/zdráv/', ex: 'Sem zdrav.', cat: 'Émotions' },
+  { q: 'srečen', a: '😊 heureux/se', hint: '/sréčen/', ex: 'Zelo sem srečen!', cat: 'Émotions' },
+  { q: 'utrujen', a: '😴 fatigué(e)', hint: '/utrújon/', ex: 'Utrujen sem po delu.', cat: 'Émotions' },
+  { q: 'ponosen', a: '💪 fier/fière', hint: '/ponósón/', ex: 'Ponosen sem nate.', cat: 'Émotions' },
+  { q: 'zadovoljen', a: '😌 satisfait(e)', hint: '/zadovóljon/', ex: 'Zadovoljen sem z rezultati.', cat: 'Émotions' },
+
+  // 👗 Vêtements
+  { q: 'jopica', a: '🧥 veste', hint: '/jófica/', ex: 'Obleci si jopico!', cat: 'Vêtements' },
+  { q: 'majica', a: '👕 t-shirt', hint: '/májica/', ex: 'Bela majica.', cat: 'Vêtements' },
+  { q: 'hlače', a: '👖 pantalon', hint: '/hláče/', ex: 'Modre hlače.', cat: 'Vêtements' },
+  { q: 'krilo', a: '👗 jupe', hint: '/krílo/', ex: 'Rdeče krilo.', cat: 'Vêtements' },
+  { q: 'čevlji', a: '👟 chaussures', hint: '/čévļi/', ex: 'Novi čevlji.', cat: 'Vêtements' },
+  { q: 'kapa', a: '🧢 casquette', hint: '/kápa/', ex: 'Nosim kapo.', cat: 'Vêtements' },
+  { q: 'površina', a: '🧣 écharpe', hint: '/površína/', ex: 'Topla površina.', cat: 'Vêtements' },
+
+  // 💬 Expressions
+  { q: 'Dober večer', a: '🌆 Bonsoir', hint: '/dóber véčer/', ex: 'Dober večer! Kako ste?', cat: 'Expressions' },
+  { q: 'Seveda', a: '💯 Bien sûr', hint: '/sévoda/', ex: 'Seveda! Ni problema.', cat: 'Expressions' },
+  { q: 'Hvala lepa', a: '🙏 Merci beaucoup', hint: '/hvála lépa/', ex: 'Hvala lepa za pomoč!', cat: 'Expressions' },
+  { q: 'Prosim', a: "😊 S'il vous plaît", hint: '/prósím/', ex: 'Še eno kavo, prosim.', cat: 'Expressions' },
+  { q: 'Oprostite', a: '🤫 Excusez-moi', hint: '/opróstite/', ex: 'Oprostite, kje je pošta?', cat: 'Expressions' },
+  { q: 'Na svidenje', a: '👋 Au revoir', hint: '/na svidénje/', ex: 'Na svidenje jutri!', cat: 'Expressions' },
+  { q: 'Dobro jutro', a: '🌅 Bonjour (matin)', hint: '/dóbro jútro/', ex: 'Dobro jutro! Lep dan.', cat: 'Expressions' },
+  { q: 'Lahko noč', a: '🌙 Bonne nuit', hint: '/láhko noč/', ex: 'Lahko noč!', cat: 'Expressions' },
+
+  // 🔤 Verbes
+  { q: 'jesti', a: '🍽️ manger', hint: '/jésti/', ex: 'Jemo večerjo ob šestih.', cat: 'Verbes' },
+  { q: 'piti', a: '🥤 boire', hint: '/píti/', ex: 'Pijem kavo vsako jutro.', cat: 'Verbes' },
+  { q: 'spati', a: '😴 dormir', hint: '/spáti/', ex: 'Spi osem ur vsako noč.', cat: 'Verbes' },
+  { q: 'iti', a: '🚶 aller', hint: '/íti/', ex: 'Grem v službo vsak dan.', cat: 'Verbes' },
+  { q: 'teči', a: '🏃 courir', hint: '/téči/', ex: 'Teče v parku zjutraj.', cat: 'Verbes' },
+  { q: 'brati', a: '📖 lire', hint: '/bráti/', ex: 'Bere knjigo vsak večer.', cat: 'Verbes' },
+  { q: 'pisati', a: '✍️ écrire', hint: '/písati/', ex: 'Piše pismo prijatelju.', cat: 'Verbes' },
+  { q: 'govoriti', a: '🗣️ parler', hint: '/govoríti/', ex: 'Govorita slovensko.', cat: 'Verbes' },
+  { q: 'poslušati', a: '👂 écouter', hint: '/póslúšati/', ex: 'Poslušaj učitelja!', cat: 'Verbes' },
+  { q: 'gledati', a: '👀 regarder', hint: '/glédáti/', ex: 'Gledamo film zvečer.', cat: 'Verbes' },
+  { q: 'delati', a: '💼 travailler', hint: '/deláti/', ex: 'Delam v pisarni.', cat: 'Verbes' },
+  { q: 'študirati', a: '📚 étudier', hint: '/študírati/', ex: 'Študira medicino v Ljubljani.', cat: 'Verbes' },
+  { q: 'kupiti', a: '🛍️ acheter', hint: '/kúpiti/', ex: 'Kupil bom hrano jutri.', cat: 'Verbes' },
+  { q: 'prodati', a: '💰 vendre', hint: '/prodáti/', ex: 'Proda svoj stari avto.', cat: 'Verbes' },
+  { q: 'pomagati', a: '🤝 aider', hint: '/pomágati/', ex: 'Mi lahko pomagaš?', cat: 'Verbes' },
+  { q: 'razumeti', a: '🧠 comprendre', hint: '/razuméti/', ex: 'Ne razumem te besede.', cat: 'Verbes' },
+  { q: 'vedeti', a: '💡 savoir', hint: '/vedéti/', ex: 'Veš, koliko je ura?', cat: 'Verbes' },
+  { q: 'misliti', a: '💭 penser', hint: '/mísliti/', ex: 'Mislim nate.', cat: 'Verbes' },
+  { q: 'ljubiti', a: '💕 aimer (fort)', hint: '/ljúbiti/', ex: 'Ljubim te!', cat: 'Verbes' },
+  { q: 'imeti rad', a: '😊 aimer (apprécier)', hint: '/iméti rád/', ex: 'Imam rad slovensko glasbo.', cat: 'Verbes' },
+  { q: 'hoteti', a: '🙋 vouloir', hint: '/hotéti/', ex: 'Hočeš kavo?', cat: 'Verbes' },
+  { q: 'znati', a: '💪 pouvoir / savoir', hint: '/znáti/', ex: 'Znaš plavati?', cat: 'Verbes' },
+  { q: 'morati', a: '📌 devoir', hint: '/moráti/', ex: 'Moram spati več.', cat: 'Verbes' },
+  { q: 'priti', a: '🚪 venir', hint: '/príti/', ex: 'Kdaj prideš domov?', cat: 'Verbes' },
+  { q: 'oditi', a: '🚗 partir', hint: '/odíti/', ex: 'Odidemo na počitnice.', cat: 'Verbes' },
+  { q: 'ostati', a: '⏸️ rester', hint: '/ostáti/', ex: 'Ostani tukaj!', cat: 'Verbes' },
+  { q: 'odpreti', a: '🔓 ouvrir', hint: '/odpréti/', ex: 'Odprite vrata.', cat: 'Verbes' },
+  { q: 'zapreti', a: '🔒 fermer', hint: '/zapréti/', ex: 'Zaprite okno, hladno je!', cat: 'Verbes' },
+  { q: 'dati', a: '🎁 donner', hint: '/dáti/', ex: 'Dal mi je cvet.', cat: 'Verbes' },
+  { q: 'vzeti', a: '✋ prendre', hint: '/vzéti/', ex: 'Vzemite si čas.', cat: 'Verbes' },
+  { q: 'najti', a: '🔍 trouver', hint: '/náti/', ex: 'Ne morem najti ključev.', cat: 'Verbes' },
+  { q: 'začeti', a: '🚀 commencer', hint: '/začéti/', ex: 'Začnemo ob devetih.', cat: 'Verbes' },
+  { q: 'nehati', a: '🏁 finir / arrêter', hint: '/néhati/', ex: 'Kdaj nehaš delati?', cat: 'Verbes' },
+  { q: 'kuhati', a: '🍳 cuisiner', hint: '/kúhati/', ex: 'Kuham večerjo.', cat: 'Verbes' },
+  { q: 'smejati se', a: '😂 rire', hint: '/sméjati se/', ex: 'Smemo se glasno.', cat: 'Verbes' },
+];
+
+const PHRASES = [
+
+  // 👋 Présentations
+  { q: 'Kako si?', a: '😊 Comment vas-tu ?', hint: '/káko si/', words: ['Kako', 'si?'], cat: 'Présentations' },
+  { q: 'Dobro, hvala!', a: '😊 Bien, merci !', hint: '/dóbro, hvála/', words: ['Dobro,', 'hvala!'], cat: 'Présentations' },
+  { q: 'Prihajam iz Francije.', a: '🇫🇷 Je viens de France.', hint: '/prihájám iz Fráncije/', words: ['Prihajam', 'iz', 'Francije.'], cat: 'Présentations' },
+  { q: 'Govoriš slovensko?', a: '🇸🇮 Tu parles slovène ?', hint: '/govoríš slovénško/', words: ['Govoriš', 'slovensko?'], cat: 'Présentations' },
+  { q: 'Malo, hvala.', a: '🤏 Un peu, merci.', hint: '/málo, hvála/', words: ['Malo,', 'hvala.'], cat: 'Présentations' },
+  { q: 'Koliko si star?', a: '🎂 Quel âge as-tu ?', hint: '/kolíko si stár/', words: ['Koliko', 'si', 'star?'], cat: 'Présentations' },
+  { q: 'S čim se ukvarjaš?', a: '💼 Quel est ton métier ?', hint: '/s čím sɛ ukvárljaš/', words: ['S', 'čim', 'se', 'ukvarjaš?'], cat: 'Présentations' },
+  { q: 'Drago mi je!', a: '🤝 Enchanté(e) !', hint: '/drágo mi jɛ/', words: ['Drago', 'mi', 'je!'], cat: 'Présentations' },
+  { q: 'Se vidiva!', a: '👋 À bientôt !', hint: '/sɛ vídɪva/', words: ['Se', 'vidiva!'], cat: 'Présentations' },
+  { q: 'Me veseli.', a: '😊 Ravi(e) de te rencontrer !', hint: '/mɛ vɛséli/', words: ['Me', 'veseli.'], cat: 'Présentations' },
+
+  // 🗣️ Communication
+  { q: 'Ne razumem.', a: '🤷 Je ne comprends pas.', hint: '/nɛ razúmom/', words: ['Ne', 'razumem.'], cat: 'Communication' },
+  { q: 'Lahko ponoviš?', a: '🔁 Peux-tu répéter ?', hint: '/láhko ponóviš/', words: ['Lahko', 'ponoviš?'], cat: 'Communication' },
+  { q: 'Lahko govoriš počasneje?', a: '🐢 Peux-tu parler plus lentement ?', hint: '/láhko govoríš počásnɛjɛ/', words: ['Lahko', 'govoriš', 'počasneje?'], cat: 'Communication' },
+  { q: 'Kako se to reče slovensko?', a: '🇸🇮 Comment dit-on ça en slovène ?', hint: '/káko sɛ tɔ réčɛ slovénško/', words: ['Kako', 'se', 'to', 'reče', 'slovensko?'], cat: 'Communication' },
+
+  // ✨ Expressions courantes
+  { q: 'Postojna je jama!', a: '🕯️ Postojna est une grotte !', hint: '/postójna jɛ jáma/', words: ['Postojna', 'je', 'jama!'], cat: 'Expressions' },
+  { q: 'Srečno novo leto!', a: '🎄 Bonne année !', hint: '/sréčno nóvo léto/', words: ['Srečno', 'novo', 'leto!'], cat: 'Expressions' },
+  { q: 'Dobrodošli v Sloveniji!', a: '🇸🇮 Bienvenue en Slovénie !', hint: '/dobrodošlí v Slovéniji/', words: ['Dobrodošli', 'v', 'Sloveniji!'], cat: 'Expressions' },
+  { q: 'Slovenija je lepa država.', a: '🏔️ La Slovénie est un beau pays.', hint: '/Slovénija jɛ lépa držáva/', words: ['Slovenija', 'je', 'lepa', 'država.'], cat: 'Expressions' },
+  { q: 'Pijem kavo vsak dan.', a: '☕ Je bois du café tous les jours.', hint: '/píjom kávo vsák dán/', words: ['Pijem', 'kavo', 'vsak', 'dan.'], cat: 'Expressions' },
+  { q: 'Lep dan!', a: '☀️ Bonne journée !', hint: '/lɛ̀p dán/', words: ['Lep', 'dan!'], cat: 'Expressions' },
+  { q: 'Na zdravje!', a: '🥂 Santé ! (toast)', hint: '/na zdrávjɛ/', words: ['Na', 'zdravje!'], cat: 'Expressions' },
+  { q: 'Dober tek!', a: '🍽️ Bon appétit !', hint: '/dóber ték/', words: ['Dober', 'tek!'], cat: 'Expressions' },
+  { q: 'Srečno!', a: '🍀 Bonne chance !', hint: '/sréčno/', words: ['Srečno!'], cat: 'Expressions' },
+  { q: 'Čestitke!', a: '🎉 Félicitations !', hint: '/čɛstítke/', words: ['Čestitke!'], cat: 'Expressions' },
+  { q: 'Vse najboljše!', a: '🎂 Joyeux anniversaire !', hint: '/vsɛ ná̑jboljšɛ/', words: ['Vse', 'najboljše!'], cat: 'Expressions' },
+];
+
+// Catégories dynamiques
+const CATS_VOCAB = [...new Set(VOCAB.map(v => v.cat))];
+const CATS_PHRASES = [...new Set(PHRASES.map(p => p.cat))];
+
+const MODES = {
+  vocab:{label:'Vocabulaire',data:VOCAB,hint:'Que signifie ce mot slovène ?'},
+  phrases:{label:'Phrases',data:PHRASES,hint:'Que signifie cette phrase ?'},
+  mixed:{label:'Mixte',data:[...VOCAB,...PHRASES],hint:'Vocabulaire ou phrases ?'},
+  review:{label:'Révision',data:[],hint:'Rappel des erreurs passées'},
+  // Catégories vocab
+  ...Object.fromEntries(CATS_VOCAB.map(cat => [
+    'cat_'+cat, {label:'📂 '+cat, data:VOCAB.filter(v=>v.cat===cat), hint:'Que signifie ce mot ?', isCat:true}
+  ])),
+  // Catégories phrases
+  ...Object.fromEntries(CATS_PHRASES.map(cat => [
+    'pcat_'+cat, {label:'💬 '+cat, data:PHRASES.filter(p=>p.cat===cat), hint:'Que signifie cette phrase ?', isCat:true}
+  ]))
+};
+
+const TOTAL_Q=12;
+let mode,questions,qIdx,score,lives,errors,answered,currentQ;
+let soundEnabled=false,audioCtx=null;
+let currentStreak=0,questionHistory=[];
+let pendingMode='vocab',quizDirection='sl2fr';
+let lastMode='vocab';
+
+// ── MÉMOIRE ──────────────────────────────────────────────────────
+function loadMem(){try{return JSON.parse(localStorage.getItem('sl_v1')||'{}')}catch(e){return{};}}
+function saveMem(d){try{localStorage.setItem('sl_v1',JSON.stringify(d))}catch(e){}}
+function recordResult(char,correct,qData){
+  const m=loadMem();
+  if(!m.chars)m.chars={};
+  if(!m.chars[char])m.chars[char]={r:0,w:0};
+  if(correct)m.chars[char].r++;else m.chars[char].w++;
+  if(!m.total)m.total={r:0,w:0};
+  if(correct)m.total.r++;else m.total.w++;
+  if(!m.streak)m.streak=0;
+  if(correct)m.streak++;else m.streak=0;
+  if(!m.review)m.review=[];
+  if(!correct){
+    const ex=m.review.find(x=>x.q===char);
+    if(ex)ex.fails=(ex.fails||0)+1;
+    else if(qData)m.review.push({...qData,fails:1});
+  }else{
+    const ex=m.review.find(x=>x.q===char);
+    if(ex){ex.ok=(ex.ok||0)+1;if(ex.ok>=2)m.review=m.review.filter(x=>x.q!==char);}
+  }
+  saveMem(m);
+}
+function getWeakChars(data,n){
+  const m=loadMem();
+  if(!m.chars)return shuffle([...data]).slice(0,n);
+  return shuffle([...data]).sort((a,b)=>{
+    const ca=m.chars[a.q]||{r:0,w:0},cb=m.chars[b.q]||{r:0,w:0};
+    return(ca.r/(ca.r+ca.w+1))-(cb.r/(cb.r+cb.w+1));
+  }).slice(0,n);
+}
+function updateMenuStats(){
+  const m=loadMem();
+  const s=m.streak||0;
+  const sb=document.getElementById('streakBanner');
+  if(s>=3){document.getElementById('streakCount').textContent=s;sb.classList.remove('hidden');}
+  else sb.classList.add('hidden');
+  const t=m.total||{r:0,w:0},tot=t.r+t.w;
+  if(tot>0){
+    const pct=Math.round(t.r/tot*100);
+    document.getElementById('globalPct').textContent=pct+'%';
+    document.getElementById('globalFill').style.width=pct+'%';
+    document.getElementById('globalProgress').style.display='block';
+  }
+  const rev=(m.review||[]);
+  const rc=document.getElementById('reviewCard');
+  const defiCard=document.querySelector('.defi-card.mode-card');
+  if(rev.length>0){
+    rc.style.display='block';
+    document.getElementById('reviewCount').textContent=rev.length+' mot(s) à revoir';
+    if(defiCard) defiCard.style.gridColumn='auto';
+  } else {
+    rc.style.display='none';
+    if(defiCard) defiCard.style.gridColumn='1/-1';
+  }
+  // Catégories
+  const catEmojis={'Nature':'🌿','Animaux':'🐾','Temps':'🗓️','Nourriture':'🍽️','Famille':'👨‍👩‍👧','Lieux':'🏙️','Couleurs':'🎨','Chiffres':'🔢','Émotions':'😀','Vêtements':'👗','Expressions':'💬','Présentations':'🙋','Communication':'🗣️','Verbes':'🔤'};
+  const cg=document.getElementById('catGrid');if(!cg)return;cg.innerHTML='';
+  CATS_VOCAB.forEach(cat=>{
+    const btn=document.createElement('div');
+    btn.className='mode-card';btn.style.cssText='padding:5px 4px;min-height:0;cursor:pointer';
+    btn.innerHTML=`<span style="font-size:22px;display:block;margin-bottom:2px">${catEmojis[cat]||'📂'}</span><h3 style="font-size:13px;line-height:1.2">${cat}</h3>`;
+    btn.onclick=()=>chooseDirScreen('cat_'+cat);
+    cg.appendChild(btn);
+  });
+}
+
+// ── AUDIO ────────────────────────────────────────────────────────
+function getCtx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx;}
+function tone(f,t,d,v,dl=0){
+  if(!soundEnabled)return;
+  try{const c=getCtx(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type=t;o.frequency.value=f;const ts=c.currentTime+dl;g.gain.setValueAtTime(0,ts);g.gain.linearRampToValueAtTime(v,ts+.02);g.gain.exponentialRampToValueAtTime(.001,ts+d);o.start(ts);o.stop(ts+d+.05);}catch(e){}
+}
+function playCorrect(){tone(523,'sine',.15,.28);tone(659,'sine',.15,.28,.1);tone(784,'sine',.3,.28,.2);}
+function playCombo(){tone(880,'sine',.1,.3);tone(1046,'sine',.25,.35,.1);}
+function playWrong(){tone(220,'sawtooth',.2,.2);tone(180,'sawtooth',.3,.2,.15);}
+function playClick(){tone(600,'sine',.06,.12);}
+function toggleSound(){
+  soundEnabled=!soundEnabled;
+  document.getElementById('soundToggle').textContent=soundEnabled?'🔊':'🔇';
+}
+
+
+// Détection plateforme
+const _isAndroid = /android/i.test(navigator.userAgent);
+
+// ── TTS : voix slovène authentique ──────────────────────────────
+let _ttsAudio = null;
+const _ttsCache = {};
+let _slVoice = null;
+let _voicesLoaded = false;
+
+// Pré-charger les voix disponibles au démarrage
+function _loadVoices() {
+  if (!window.speechSynthesis) return;
+  const voices = speechSynthesis.getVoices();
+  if (voices.length > 0) {
+    _slVoice = _pickSlovenianVoice(voices);
+    _voicesLoaded = true;
+  }
+}
+function _pickSlovenianVoice(voices) {
+  // Priorité : voix sl-SI natives (pas "Google", plus authentiques sur desktop)
+  const priority = [
+    v => v.lang === 'sl-SI' && !v.name.includes('Google'),
+    v => v.lang === 'sl' && !v.name.includes('Google'),
+    v => v.lang === 'sl-SI',
+    v => v.lang && v.lang.startsWith('sl'),
+  ];
+  for (const test of priority) {
+    const found = voices.find(test);
+    if (found) return found;
+  }
+  return null;
+}
+if (window.speechSynthesis) {
+  _loadVoices();
+  speechSynthesis.addEventListener('voiceschanged', () => { _loadVoices(); });
+}
+
+function _playAudio(url) {
+  if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio = null; }
+  return new Promise((resolve, reject) => {
+    const audio = new Audio();
+    _ttsAudio = audio;
+    audio.volume = 1.0;
+    audio.onended = resolve;
+    audio.onerror = reject;
+    audio.src = url;
+    audio.load();
+    audio.play().then(resolve).catch(reject);
+  });
+}
+
+// Lecture directe Google TTS (pas de Promise — play-and-forget)
+function _playGoogleTTS(url) {
+  if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio = null; }
+  const audio = new Audio();
+  _ttsAudio = audio;
+  audio.volume = 1.0;
+  audio.src = url;
+  audio.load();
+  return audio.play().catch(function(e) { throw e; });
+}
+
+function _webSpeechSL(txt, rate=0.82) {
+  if (!window.speechSynthesis) return Promise.reject();
+  return new Promise((resolve, reject) => {
+    speechSynthesis.cancel();
+    const doSpeak = () => {
+      const u = new SpeechSynthesisUtterance(txt);
+      u.lang = 'sl-SI';
+      u.rate = rate;
+      u.pitch = 1.0;
+      const voice = _slVoice || _pickSlovenianVoice(speechSynthesis.getVoices());
+      if (voice) u.voice = voice;
+      // Si aucune voix sl trouvée → rejeter pour qu'on ne prononce pas avec une voix fr
+      if (!voice && !speechSynthesis.getVoices().some(v => v.lang && v.lang.startsWith('sl'))) {
+        reject(new Error('no slovenian voice'));
+        return;
+      }
+      u.onend = resolve;
+      u.onerror = reject;
+      speechSynthesis.speak(u);
+    };
+    if (speechSynthesis.getVoices().length > 0) doSpeak();
+    else speechSynthesis.addEventListener('voiceschanged', doSpeak, { once: true });
+  });
+}
+
+// ── MP3 LOCAUX ──────────────────────────────────────────────────
+// Placez vos MP3 dans un dossier audio/ à côté du fichier HTML
+// ── DÉVERROUILLAGE AUDIO (autoplay policy) ───────────────────────
+let _audioUnlocked = false;
+async function _unlockAudio() {
+  if (_audioUnlocked) return;
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    await ctx.resume();
+    const buf = ctx.createBuffer(1, 1, 22050);
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    src.connect(ctx.destination);
+    src.start(0);
+    _audioUnlocked = true;
+  } catch(e) {}
+}
+document.addEventListener('click', _unlockAudio, { once: false });
+document.addEventListener('touchstart', _unlockAudio, { once: false });
+
+function _normalizeKey(s) {
+  return s.toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9 ]/g, '')
+    .replace(/\s+/g, ' ').trim();
+}
+
+async function speak(txt) {
+  if (!txt) return;
+  await _unlockAudio();
+  if (_ttsAudio) { _ttsAudio.pause(); _ttsAudio = null; }
+  if (window.speechSynthesis) speechSynthesis.cancel();
+
+  // PRIORITÉ 1 : AUDIO_MAP (base64 ou URL locale)
+  if (AUDIO_MAP[txt]) {
+    try { await _playAudio(AUDIO_MAP[txt]); return; } catch(e) { console.warn('AUDIO_MAP exact failed:', txt, e); }
+  }
+
+  // PRIORITÉ 2 : AUDIO_MAP normalisée
+  var kl = _normalizeKey(txt);
+  var mk = Object.keys(AUDIO_MAP);
+  for (var _i = 0; _i < mk.length; _i++) {
+    if (_normalizeKey(mk[_i]) === kl) {
+      try { await _playAudio(AUDIO_MAP[mk[_i]]); return; } catch(e) { console.warn('AUDIO_MAP norm failed:', mk[_i], e); }
+    }
+  }
+
+  // PRIORITÉ 3 : Google Translate TTS (voix slovaque — très proche phonétiquement du slovène)
+  var enc = encodeURIComponent(txt);
+  var gUrls = [
+    'https://translate.googleapis.com/translate_tts?ie=UTF-8&q=' + enc + '&tl=sk&client=gtx&ttsspeed=0.85',
+    'https://translate.google.com/translate_tts?ie=UTF-8&q=' + enc + '&tl=sk-SK&client=tw-ob&ttsspeed=0.85',
+  ];
+  for (var _j = 0; _j < gUrls.length; _j++) {
+    try { await _playAudio(gUrls[_j]); return; } catch(e) {
+      console.warn('Google TTS échoué:', gUrls[_j]);
+    }
+  }
+
+  // PRIORITÉ 4 : Web Speech API — cherche une voix slave (slovaque, tchèque, polonais)
+  if (window.speechSynthesis) {
+    var voices = speechSynthesis.getVoices();
+    var slVoice = voices.find(function(v) {
+      return v.lang === 'sk-SK' || v.lang === 'sk' ||
+             v.lang === 'cs-CZ' || v.lang === 'cs' ||
+             v.lang === 'pl-PL' || v.lang === 'pl';
+    });
+    if (slVoice) {
+      var u = new SpeechSynthesisUtterance(txt);
+      u.lang = slVoice.lang;
+      u.voice = slVoice;
+      u.rate = 0.82;
+      speechSynthesis.speak(u);
+      return;
+    }
+  }
+
+  console.warn('⚠️ Aucune voix slave trouvée. Options :');
+  console.warn('  1. Installez une voix slovaque/tchèque dans Paramètres Windows');
+  console.warn('  2. Utilisez Microsoft Edge (il a plus de voix gratuites)');
+}
+
+// ── SPEAK HELPER ─────────────────────────────────────────────────
+function speakQ(qObj) {
+  if (!qObj) return;
+  speak(qObj.q);
+}
+
+// ── UTILITAIRES ──────────────────────────────────────────────────
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const g=document.querySelector('.game');
+  if(g)g.scrollTop=0;
+}
+function goMenu(){showScreen('menuScreen');updateMenuStats();updateDefiMenuCard();}
+function replayLast(){if(lastMode==='reconstruct')chooseReconstructDir();else if(lastMode==='dictee')chooseDicteeDir();else startGame(lastMode);}
+function showCombo(t){const el=document.getElementById('comboFlash');el.textContent=t;el.classList.remove('show');void el.offsetWidth;el.classList.add('show');}
+
+// ── MODE QUIZ ────────────────────────────────────────────────────
+let _pendingCat = '';
+function chooseDirScreen(m){
+  pendingMode=m;
+  const labels={vocab:'Vocabulaire 📖',phrases:'Phrases 💬',mixed:'Mixte 🎲'};
+  document.getElementById('dirTitle').textContent=labels[m]||'Choisir le sens';
+  // Bouton Apprendre : visible uniquement pour les catégories vocab
+  const isVocabCat = m.startsWith('cat_');
+  const learnBtn = document.getElementById('learnDirBtn');
+  if(learnBtn){
+    learnBtn.style.display = isVocabCat ? '' : 'none';
+    if(isVocabCat){ _pendingCat = m.replace('cat_',''); }
+  }
+  showScreen('dirScreen');
+}
+function startGame(m,dir){
+  mode=m;lastMode=m;currentStreak=0;questionHistory=[];
+  quizDirection=dir||'random';
+  questions=getWeakChars(MODES[m].data,TOTAL_Q);
+  questions=questions.map(q=>{
+    let d;
+    if(quizDirection==='random') d=Math.random()>.5?'sl2fr':'fr2sl';
+    else d=quizDirection;
+    return{...q,direction:d};
+  });
+  qIdx=0;score=0;lives=5;errors=[];answered=false;
+  showScreen('quizScreen');
+  const dirLabel=quizDirection==='sl2fr'?' → français':quizDirection==='fr2sl'?' → slovène':' ×2';
+  document.getElementById('modeLbl').textContent=(MODES[m].label||m)+dirLabel;
+  updateStreakUI();
+  renderQuestion();
+}
+function startReview(){
+  const m=loadMem();
+  const rev=m.review||[];
+  if(!rev.length){goMenu();return;}
+  mode='review';lastMode='review';currentStreak=0;questionHistory=[];
+  questions=shuffle([...rev]).slice(0,TOTAL_Q).map(q=>({...q,direction:Math.random()>.5?'sl2fr':'fr2sl'}));
+  qIdx=0;score=0;lives=5;errors=[];answered=false;
+  showScreen('quizScreen');
+  document.getElementById('modeLbl').textContent='🔁 Révision';
+  updateStreakUI();
+  renderQuestion();
+}
+function renderLives(){
+  const el=document.getElementById('livesDisplay');el.innerHTML='';
+  for(let i=0;i<5;i++){const s=document.createElement('span');s.textContent=i<lives?'♥':'♡';s.style.color=i<lives?'var(--aurora-green)':'rgba(255,255,255,.2)';el.appendChild(s);}
+}
+function updateStreakUI(){
+  const el=document.getElementById('streakDisplay'),num=document.getElementById('streakNum');
+  if(currentStreak>=2){el.style.display='flex';num.textContent=currentStreak;el.classList.remove('fire');void el.offsetWidth;el.classList.add('fire');}
+  else el.style.display='none';
+}
+function renderQuestion(){
+  answered=false;
+  const q=questions[qIdx];currentQ=q;
+  const dir=q.direction||'sl2fr';
+  document.getElementById('progressFill').style.width=Math.round(qIdx/TOTAL_Q*100)+'%';
+  document.getElementById('scoreLbl').textContent=score+' pts';
+  renderLives();
+  const card=document.getElementById('charCard');
+  card.classList.remove('flip-in');void card.offsetWidth;card.classList.add('flip-in');
+  if(dir==='sl2fr'){
+    document.getElementById('mainChar').style.fontSize='';
+    document.getElementById('mainChar').textContent=q.q;
+    const lenQ=q.q.length;
+    document.getElementById('mainChar').style.fontSize=lenQ>30?'clamp(14px,4vmin,20px)':lenQ>20?'clamp(16px,5vmin,22px)':lenQ>10?'clamp(18px,5.5vmin,24px)':lenQ>5?'clamp(20px,6.5vmin,26px)':'clamp(22px,7vmin,28px)';
+    document.getElementById('charHint').textContent=q.hint||'';
+    document.getElementById('examplePhrase').textContent=q.ex||'';
+  }else{
+    document.getElementById('mainChar').textContent=q.a;
+    const lenA=q.a.length;
+    document.getElementById('mainChar').style.fontSize=lenA>30?'clamp(14px,4vmin,20px)':lenA>20?'clamp(16px,5vmin,22px)':lenA>10?'clamp(18px,5.5vmin,24px)':lenA>5?'clamp(20px,6.5vmin,26px)':'clamp(22px,7vmin,28px)';
+    document.getElementById('charHint').textContent='';
+    document.getElementById('examplePhrase').textContent=q.ex||'';
+  }
+  document.getElementById('feedback').textContent='';document.getElementById('feedback').className='feedback';
+  document.getElementById('nextBtn').className='next-btn';
+  const modeData=mode==='review'?[...VOCAB,...PHRASES]:MODES[mode].data;
+  let correctAnswer,opts;
+  if(dir==='sl2fr'){
+    correctAnswer=q.a;
+    const allAns=modeData.map(x=>x.a);
+    opts=shuffle([q.a,...shuffle(allAns.filter(a=>a!==q.a)).slice(0,3)]);
+  }else{
+    correctAnswer=q.q;
+    const allQ=modeData.map(x=>x.q);
+    opts=shuffle([q.q,...shuffle(allQ.filter(k=>k!==q.q)).slice(0,3)]);
+  }
+  const grid=document.getElementById('optionsGrid');grid.innerHTML='';
+  opts.forEach(o=>{
+    const b=document.createElement('button');b.className='opt';
+    b.textContent=o;
+    b.style.fontSize=o.length>20?'11px':o.length>10?'13px':'15px';
+    b.onclick=()=>pick(b,o,correctAnswer,dir);
+    grid.appendChild(b);
+  });
+}
+function pick(btn,chosen,correct,dir){
+  if(answered)return;answered=true;
+  document.querySelectorAll('.opt').forEach(b=>{b.disabled=true;if(b.textContent===correct)b.classList.add('correct');});
+  const q=questions[qIdx],fb=document.getElementById('feedback');
+  const ok=chosen===correct;
+  recordResult(q.q,ok,q);
+  questionHistory.push(ok);
+  if(ok){
+    score+=10;btn.classList.add('correct');currentStreak++;updateStreakUI();
+    if(currentStreak===3){fb.textContent='🔥 Série de 3 !';fb.className='feedback good';showCombo('🔥 ×3');playCombo();}
+    else if(currentStreak===5){fb.textContent='⚡ Série de 5 !';fb.className='feedback good';showCombo('⚡ ×5');playCombo();}
+    else if(currentStreak>5&&currentStreak%2===1){showCombo('❄️ ×'+currentStreak);fb.textContent='❄️ ×'+currentStreak+' !';fb.className='feedback good';playCombo();}
+    else{fb.textContent=dir==='sl2fr'?`✓ ${q.q} = ${q.a}`:`✓ ${q.a} = ${q.q}`;fb.className='feedback good';playCorrect();}
+  }else{
+    btn.classList.add('wrong');lives--;currentStreak=0;updateStreakUI();
+    errors.push({char:q.q,correct:q.a,hint:q.hint});
+    fb.textContent=dir==='sl2fr'?`✗ ${q.q} = ${q.a}`:`✗ ${q.a} = ${q.q}`;fb.className='feedback bad';playWrong();
+  }
+  document.getElementById('scoreLbl').textContent=score+' pts';renderLives();
+  // Révéler l'IPA après la réponse (utile en fr2sl)
+  if(dir==='fr2sl') document.getElementById('charHint').textContent=q.hint||'';
+  const nb=document.getElementById('nextBtn');
+  nb.textContent=qIdx<TOTAL_Q-1&&lives>0?'Question suivante →':'Voir les résultats →';
+  nb.className='next-btn show';
+  speakQ(q);
+  if(lives<=0)setTimeout(()=>showResults(false),600);
+}
+function nextQuestion(){qIdx++;if(qIdx>=TOTAL_Q||lives<=0){showResults(false);return;}renderQuestion();}
+
+// ── RÉSULTATS ────────────────────────────────────────────────────
+function showResults(isDraw){
+  showScreen('resultsScreen');
+  const s=score,maxS=TOTAL_Q*10;
+  const errs=errors;
+  const correctCount=questionHistory.filter(Boolean).length;
+  const pct=Math.round(s/maxS*100);
+  document.getElementById('finalScore').textContent=s;
+  document.getElementById('finalTotal').textContent='/ '+maxS;
+  document.getElementById('stCorrect').textContent=correctCount;
+  document.getElementById('stWrong').textContent=errs.length;
+  document.getElementById('stPct').textContent=pct+'%';
+  let msg,sub,emo;
+  if(pct>=90){msg='Odlično!';sub='Excellent ! Vous maîtrisez ce sujet.';emo='⭐';}
+  else if(pct>=70){msg='Dobro opravljeno!';sub='Très bien ! Encore un peu de pratique.';emo='🌟';}
+  else if(pct>=50){msg='Nadaljuj!';sub='Pas mal ! Continuez à pratiquer.';emo='❄️';}
+  else{msg='Vadi še!';sub='La pratique régulière est la clé.';emo='🇸🇮';}
+  document.getElementById('resultEmoji').textContent=emo;
+  document.getElementById('resultMsg').textContent=msg;
+  document.getElementById('resultSub').textContent=sub;
+  if(questionHistory.length>0){
+    const bars=document.getElementById('perfBars');bars.innerHTML='';
+    document.getElementById('perfChart').style.display='block';
+    questionHistory.forEach((ok,i)=>{
+      const b=document.createElement('div');b.className='perf-bar '+(ok?'ok':'ko');
+      b.style.height='0';bars.appendChild(b);
+      setTimeout(()=>{b.style.height=(ok?'100%':'40%');},i*55+300);
+    });
+  }else document.getElementById('perfChart').style.display='none';
+  const wl=document.getElementById('wrongList');
+  if(errs.length>0){
+    let html='<h4>À revoir :</h4>';
+    errs.slice(0,6).forEach(e=>{html+=`<div class="wrong-item"><span class="wrong-char">${e.char}</span><span class="wrong-ans">${e.correct}${e.hint?' · '+e.hint:''}<span class="review-tag">révision</span></span></div>`;});
+    wl.innerHTML=html;
+  }else wl.innerHTML='<p style="text-align:center;color:var(--aurora-green);font-size:13px;padding:.5rem 0">🎉 Aucune erreur !</p>';
+  document.getElementById('replayBtn').textContent='Rejouer — '+(MODES[mode]&&MODES[mode].label||'');
+}
+
+// ── MODE RECONSTRUIRE ────────────────────────────────────────────
+const RECONSTRUCT_Q=8;
+let rQuestions,rQIdx,rScore,rErrors,rAnswered,rCurrentAnswer,rCurrentWords;
+
+function chooseReconstructDir(){showScreen('reconstructDirScreen');}
+function startReconstruct(dir){
+  lastMode='reconstruct';
+  const pool=PHRASES.filter(p=>p.words&&p.words.length>=2);
+  rQuestions=shuffle([...pool]).slice(0,RECONSTRUCT_Q).map(q=>{
+    // assign direction per question
+    let d=dir;
+    if(d==='random') d=Math.random()<0.5?'fr2sl':'sl2fr';
+    return {...q,_dir:d};
+  });
+  rQIdx=0;rScore=0;rErrors=[];
+  showScreen('reconstructScreen');
+  renderReconstructQ();
+}
+function renderReconstructQ(){
+  rAnswered=false;rCurrentAnswer=[];
+  const q=rQuestions[rQIdx];
+  const dir=q._dir;
+  document.getElementById('rProgressFill').style.width=Math.round(rQIdx/RECONSTRUCT_Q*100)+'%';
+  document.getElementById('rScoreLbl').textContent=rScore+' pts';
+  document.getElementById('rLivesDisplay').innerHTML='<span style="font-size:13px;color:var(--text-muted)">'+(rQIdx+1)+' / '+RECONSTRUCT_Q+'</span>';
+  document.getElementById('rFeedback').textContent='';document.getElementById('rFeedback').className='feedback';
+  document.getElementById('rNextBtn').className='next-btn';
+  document.getElementById('rCheckBtn').style.display='none';
+  const hintEl=document.getElementById('rHint');hintEl.textContent='';hintEl.style.opacity='0';
+
+  if(dir==='fr2sl'){
+    // Show French, reconstruct Slovenian (original mode)
+    document.getElementById('rModeLbl').textContent='🧩 FR → SL';
+    document.getElementById('rInstruction').textContent='Reconstituez la phrase en slovène :';
+    document.getElementById('rTranslation').textContent=q.a;
+    rCurrentWords=shuffle([...q.words]);
+  } else {
+    // Show Slovenian, reconstruct French
+    document.getElementById('rModeLbl').textContent='🧩 SL → FR';
+    document.getElementById('rInstruction').textContent='Reconstituez la traduction en français :';
+    document.getElementById('rTranslation').textContent=q.q;
+    // Split French answer into words
+    rCurrentWords=shuffle(q.a.split(' '));
+  }
+  renderReconstructUI();
+}
+function renderReconstructUI(){
+  const q=rQuestions[rQIdx];
+  const dir=q._dir;
+  const targetWords=dir==='fr2sl'?q.words:q.a.split(' ');
+  const slots=document.getElementById('reconstructSlots');slots.innerHTML='';
+  if(rCurrentAnswer.length===0){
+    const ph=document.createElement('span');ph.style.cssText='font-size:13px;color:var(--text-muted);font-style:italic';
+    ph.textContent='Cliquez les mots pour former la phrase…';slots.appendChild(ph);
+  }else{
+    rCurrentAnswer.forEach((wordIdx,i)=>{
+      const btn=document.createElement('button');btn.className='slot-word';
+      btn.textContent=rCurrentWords[wordIdx];
+      if(!rAnswered)btn.onclick=()=>removeReconstructWord(i);
+      slots.appendChild(btn);
+    });
+  }
+  const bank=document.getElementById('wordBank');bank.innerHTML='';
+  rCurrentWords.forEach((word,i)=>{
+    const btn=document.createElement('button');btn.className='bank-word';btn.textContent=word;
+    if(rCurrentAnswer.includes(i)){btn.classList.add('used');}
+    else if(!rAnswered){btn.onclick=()=>addReconstructWord(i);}
+    bank.appendChild(btn);
+  });
+  const cb=document.getElementById('rCheckBtn');
+  if(!rAnswered&&rCurrentAnswer.length===targetWords.length)cb.style.display='block';
+  else cb.style.display='none';
+}
+function addReconstructWord(idx){if(rAnswered||rCurrentAnswer.includes(idx))return;rCurrentAnswer.push(idx);playClick();renderReconstructUI();}
+function removeReconstructWord(ansIdx){if(rAnswered)return;rCurrentAnswer.splice(ansIdx,1);renderReconstructUI();}
+function checkReconstruct(){
+  if(rAnswered)return;
+  const q=rQuestions[rQIdx];rAnswered=true;
+  const dir=q._dir;
+  const targetWords=dir==='fr2sl'?q.words:q.a.split(' ');
+  document.getElementById('rCheckBtn').style.display='none';
+  const built=rCurrentAnswer.map(i=>rCurrentWords[i]).join(' ');
+  const correct=targetWords.join(' ');
+  const fb=document.getElementById('rFeedback');
+  if(built===correct){
+    rScore+=10;
+    fb.textContent=dir==='fr2sl'?'✨ Parfait ! '+q.q:'✨ Parfait ! '+q.a;
+    fb.className='feedback good';playCorrect();
+    document.querySelectorAll('.slot-word').forEach(el=>{el.style.background='linear-gradient(135deg,var(--aurora-green),#1e6a3a)';el.style.borderColor='#27ae60';});
+  }else{
+    rErrors.push({char:dir==='fr2sl'?q.a:q.q,correct:dir==='fr2sl'?q.q:q.a});
+    fb.textContent='✗ Bonne réponse :';fb.className='feedback bad';
+    if(dir==='fr2sl'){
+      const hintEl=document.getElementById('rHint');hintEl.textContent=q.hint;hintEl.style.opacity='1';
+    }
+    const slots=document.getElementById('reconstructSlots');slots.innerHTML='';
+    targetWords.forEach(w=>{
+      const btn=document.createElement('span');btn.className='slot-word';
+      btn.style.cssText='background:linear-gradient(135deg,var(--aurora-green),#1e6a3a);border-color:#27ae60;cursor:default';
+      btn.textContent=w;slots.appendChild(btn);
+    });
+    playWrong();
+  }
+  document.getElementById('rScoreLbl').textContent=rScore+' pts';
+  const nb=document.getElementById('rNextBtn');
+  nb.textContent=rQIdx<RECONSTRUCT_Q-1?'Question suivante →':'Voir les résultats →';
+  nb.className='next-btn show';
+  setTimeout(()=>speakQ(q),600);
+}
+function nextReconstructQ(){
+  rQIdx++;
+  if(rQIdx>=RECONSTRUCT_Q){
+    showScreen('resultsScreen');
+    const maxS=RECONSTRUCT_Q*10,pct=Math.round(rScore/maxS*100);
+    document.getElementById('finalScore').textContent=rScore;
+    document.getElementById('finalTotal').textContent='/ '+maxS;
+    document.getElementById('stCorrect').textContent=RECONSTRUCT_Q-rErrors.length;
+    document.getElementById('stWrong').textContent=rErrors.length;
+    document.getElementById('stPct').textContent=pct+'%';
+    let msg,sub,emo;
+    if(pct>=90){msg='Odlično!';sub='Excellent ! Parfaite maîtrise des phrases.';emo='⭐';}
+    else if(pct>=70){msg='Dobro opravljeno!';sub='Très bien ! Encore un peu de pratique.';emo='🌟';}
+    else if(pct>=50){msg='Nadaljuj!';sub='Pas mal ! Continuez à pratiquer.';emo='❄️';}
+    else{msg='Vadi še!';sub='La pratique régulière est la clé.';emo='🇸🇮';}
+    document.getElementById('resultEmoji').textContent=emo;
+    document.getElementById('resultMsg').textContent=msg;
+    document.getElementById('resultSub').textContent=sub;
+    document.getElementById('perfChart').style.display='none';
+    const wl=document.getElementById('wrongList');
+    if(rErrors.length>0){
+      let html='<h4>À revoir :</h4>';
+      rErrors.slice(0,6).forEach(e=>{html+=`<div class="wrong-item"><span class="wrong-char" style="font-size:13px">${e.char}</span><span class="wrong-ans">${e.correct}<span class="review-tag">révision</span></span></div>`;});
+      wl.innerHTML=html;
+    }else wl.innerHTML='<p style="text-align:center;color:var(--aurora-green);font-size:13px;padding:.5rem 0">🎉 Aucune erreur !</p>';
+    document.getElementById('replayBtn').textContent='Rejouer — Reconstruire';
+    return;
+  }
+  renderReconstructQ();
+}
+function speakReconstruct(){if(rQuestions&&rQIdx<rQuestions.length)speakQ(rQuestions[rQIdx]);}
+function speakCurrent(){if(currentQ)speakQ(currentQ);}
+
+// ── MODE DICTÉE ──────────────────────────────────────────────────
+const DICTEE_Q=8;
+let dPool,dType,dQuestions,dQIdx,dScore,dErrors,dAnswered,dCurrentAnswer,dCurrentWords,dAnswer;
+
+function chooseDicteeDir(){showScreen('dicteeDirScreen');}
+
+function startDictee(type){
+  dType=type;lastMode='dictee';
+
+  if(type==='mots'){
+    dPool=VOCAB.map(v=>({...v,words:v.q.split('')}));
+  }else if(type==='phrases'){
+    dPool=PHRASES.filter(p=>p.words&&p.words.length>=2);
+  }else{
+    dPool=[...VOCAB.map(v=>({...v,words:v.q.split('')})),...PHRASES.filter(p=>p.words&&p.words.length>=2)];
+  }
+
+  dQuestions=shuffle([...dPool]).slice(0,DICTEE_Q);
+  dQIdx=0;dScore=0;dErrors=[];
+  showScreen('dicteeScreen');
+  renderDicteeQ();
+}
+
+function renderDicteeQ(){
+  dAnswered=false;dCurrentAnswer=[];
+  const item=dQuestions[dQIdx];
+  // For vocab: answer = full word (q), for phrases: answer = full phrase (q)
+  dAnswer=item.q;
+  // Build word/letter bank
+  if(dType==='mots'){
+    // Single word — split into letters
+    dCurrentWords=shuffle(item.q.split(''));
+  }else if(dType==='phrases'){
+    // Phrase — split into words
+    dCurrentWords=shuffle([...item.words]);
+  }else{
+    // Mixte
+    if(item.words){
+      // It's a phrase
+      dCurrentWords=shuffle([...item.words]);
+    }else{
+      const wordStr=item.q;
+      if(wordStr.split(' ').length>1){
+        dCurrentWords=shuffle(wordStr.split(' '));
+      }else{
+        dCurrentWords=shuffle(wordStr.split(''));
+      }
+    }
+  }
+
+  document.getElementById('dProgressFill').style.width=Math.round(dQIdx/DICTEE_Q*100)+'%';
+  document.getElementById('dScoreLbl').textContent=dScore+' pts';
+  document.getElementById('dLivesDisplay').innerHTML='<span style="font-size:13px;color:var(--text-muted)">'+(dQIdx+1)+' / '+DICTEE_Q+'</span>';
+  document.getElementById('dFeedback').textContent='';document.getElementById('dFeedback').className='feedback';
+  document.getElementById('dNextBtn').className='next-btn';
+  document.getElementById('dCheckBtn').style.display='none';
+
+  // Speed slider label
+  const slider=document.getElementById('dicteeSpeedSlider');
+  const lbl=document.getElementById('dicteeSpeedLbl');
+  lbl.textContent=parseFloat(slider.value).toFixed(2)+'x';
+
+  // Update mode label
+  const isWords=dCurrentWords.length===item.q.length&&!item.q.includes(' ');
+  document.getElementById('dModeLbl').textContent=isWords?'👂 Dictée — Mot':'👂 Dictée — Phrase';
+
+  renderDicteeUI();
+  // Play audio automatically after short delay
+  setTimeout(()=>playDicteeAudio(),400);
+}
+
+function renderDicteeUI(){
+  const item=dQuestions[dQIdx];
+  const slots=document.getElementById('dicteeSlots');slots.innerHTML='';
+  if(dCurrentAnswer.length===0){
+    const ph=document.createElement('span');ph.style.cssText='font-size:13px;color:var(--text-muted);font-style:italic';
+    ph.textContent='Cliquez pour composer la réponse…';slots.appendChild(ph);
+  }else{
+    dCurrentAnswer.forEach((wordIdx,i)=>{
+      const btn=document.createElement('button');btn.className='slot-word';
+      btn.textContent=dCurrentWords[wordIdx];
+      if(!dAnswered)btn.onclick=()=>removeDicteeWord(i);
+      slots.appendChild(btn);
+    });
+  }
+  const bank=document.getElementById('dicteeBank');bank.innerHTML='';
+  dCurrentWords.forEach((word,i)=>{
+    const btn=document.createElement('button');btn.className='bank-word';btn.textContent=word;
+    if(dCurrentAnswer.includes(i)){btn.classList.add('used');}
+    else if(!dAnswered){btn.onclick=()=>addDicteeWord(i);}
+    bank.appendChild(btn);
+  });
+  const cb=document.getElementById('dCheckBtn');
+  if(!dAnswered&&dCurrentAnswer.length===dCurrentWords.length)cb.style.display='block';
+  else cb.style.display='none';
+}
+
+function addDicteeWord(idx){if(dAnswered||dCurrentAnswer.includes(idx))return;dCurrentAnswer.push(idx);playClick();renderDicteeUI();}
+function removeDicteeWord(ansIdx){if(dAnswered)return;dCurrentAnswer.splice(ansIdx,1);renderDicteeUI();}
+
+function playDicteeAudio(){
+  const item=dQuestions[dQIdx];if(!item)return;
+  speakQ(item);
+}
+function playDicteeSlow(){
+  const item=dQuestions[dQIdx];if(!item)return;
+  const rate=parseFloat(document.getElementById('dicteeSpeedSlider').value)||0.65;
+  if(_ttsAudio){_ttsAudio.pause();_ttsAudio=null;}
+  const nk=_normalizeKey(item.q);
+  let clip=AUDIO_MAP[item.q];
+  if(!clip){for(const k in AUDIO_MAP){if(_normalizeKey(k)===nk){clip=AUDIO_MAP[k];break;}}}
+  // Si on a un clip, on le joue ajusté en vitesse
+  if(clip){
+    _ttsAudio=new Audio(clip);
+    _ttsAudio.playbackRate=rate;
+    _ttsAudio.volume=1.0;
+    _ttsAudio.play();
+  }else{
+    // Fallback Google TTS direct avec vitesse
+    const enc=encodeURIComponent(item.q);
+    const url='https://translate.googleapis.com/translate_tts?ie=UTF-8&q='+enc+'&tl=sl&client=gtx&ttsspeed='+rate;
+    _ttsAudio=new Audio(url);
+    _ttsAudio.volume=1.0;
+    _ttsAudio.play().catch(()=>{console.warn('Google TTS direct failed for dictee speed');});
+  }
+}
+function changeDicteeSpeed(){
+  const slider=document.getElementById('dicteeSpeedSlider');
+  const lbl=document.getElementById('dicteeSpeedLbl');
+  const rate=parseFloat(slider.value)||0.65;
+  lbl.textContent=rate.toFixed(2)+'x';
+  // Replay immediately at new speed
+  if(dQuestions&&dQuestions[dQIdx]) playDicteeSlow();
+}
+
+function checkDictee(){
+  if(dAnswered)return;
+  dAnswered=true;
+  const item=dQuestions[dQIdx];
+  document.getElementById('dCheckBtn').style.display='none';
+
+  const built=dCurrentAnswer.map(i=>dCurrentWords[i]).join('');
+  const correct=dAnswer;
+  const fb=document.getElementById('dFeedback');
+
+  if(built===correct){
+    dScore+=10;
+    fb.textContent='✨ Parfait !';
+    fb.className='feedback good';playCorrect();
+    document.querySelectorAll('.slot-word').forEach(el=>{el.style.background='linear-gradient(135deg,var(--aurora-green),#1e6a3a)';el.style.borderColor='#27ae60';});
+  }else{
+    dErrors.push({char:item.a||item.q,correct:correct});
+    fb.textContent='✗ Bonne réponse : '+item.q;fb.className='feedback bad';
+    const slots=document.getElementById('dicteeSlots');slots.innerHTML='';
+    const parts=dType==='mots'||!item.words?correct.split(''):correct.split('');
+    parts.forEach(ch=>{
+      const sp=document.createElement('span');sp.className='slot-word';
+      sp.style.cssText='background:linear-gradient(135deg,var(--aurora-green),#1e6a3a);border-color:#27ae60;cursor:default';
+      sp.textContent=ch;slots.appendChild(sp);
+    });
+    playWrong();
+  }
+  document.getElementById('dScoreLbl').textContent=dScore+' pts';
+  const nb=document.getElementById('dNextBtn');
+  nb.textContent=dQIdx<DICTEE_Q-1?'Question suivante →':'Voir les résultats →';
+  nb.className='next-btn show';
+  setTimeout(()=>speakQ(item),600);
+}
+
+function nextDicteeQ(){
+  dQIdx++;
+  if(dQIdx>=DICTEE_Q){
+    showScreen('resultsScreen');
+    const maxS=DICTEE_Q*10,pct=Math.round(dScore/maxS*100);
+    document.getElementById('finalScore').textContent=dScore;
+    document.getElementById('finalTotal').textContent='/ '+maxS;
+    document.getElementById('stCorrect').textContent=DICTEE_Q-dErrors.length;
+    document.getElementById('stWrong').textContent=dErrors.length;
+    document.getElementById('stPct').textContent=pct+'%';
+    let msg,sub,emo;
+    if(pct>=90){msg='Odlično!';sub='Excellent ! Parfaite maîtrise.';emo='⭐';}
+    else if(pct>=70){msg='Dobro opravljeno!';sub='Très bien ! Encore un peu de pratique.';emo='🌟';}
+    else if(pct>=50){msg='Nadaljuj!';sub='Pas mal ! Continuez à pratiquer.';emo='❄️';}
+    else{msg='Vadi še!';sub='La pratique régulière est la clé.';emo='🇸🇮';}
+    document.getElementById('resultEmoji').textContent=emo;
+    document.getElementById('resultMsg').textContent=msg;
+    document.getElementById('resultSub').textContent=sub;
+    document.getElementById('perfChart').style.display='none';
+    const wl=document.getElementById('wrongList');
+    if(dErrors.length>0){
+      let html='<h4>À revoir :</h4>';
+      dErrors.slice(0,6).forEach(e=>{html+=`<div class="wrong-item"><span class="wrong-char" style="font-size:13px">${e.char}</span><span class="wrong-ans">${e.correct}<span class="review-tag">révision</span></span></div>`;});
+      wl.innerHTML=html;
+    }else wl.innerHTML='<p style="text-align:center;color:var(--aurora-green);font-size:13px;padding:.5rem 0">🎉 Aucune erreur !</p>';
+    document.getElementById('replayBtn').textContent='Rejouer — Dictée';
+    return;
+  }
+  renderDicteeQ();
+}
+
+// ── DÉFI JOURNALIER ─────────────────────────────────────────────
+const DEFI_Q_PER_PHASE=5;
+const DEFI_PHASES=[
+  {label:'Vocabulaire',data:()=>VOCAB,dir:'sl2fr',icon:'📖'},
+  {label:'Vocabulaire',data:()=>VOCAB,dir:'sl2fr',icon:'📖'},
+  {label:'Phrases',data:()=>PHRASES,dir:'sl2fr',icon:'💬'}
+];
+const TOTAL_DEFI_Q=DEFI_PHASES.length*DEFI_Q_PER_PHASE;
+let defiState=null,defiTimerInterval=null;
+
+function getDefiDateKey(){const d=new Date();return`${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;}
+function loadDefi(){try{return JSON.parse(localStorage.getItem('sl_defi')||'{}')}catch(e){return{};}}
+function saveDefi(d){try{localStorage.setItem('sl_defi',JSON.stringify(d))}catch(e){}}
+function getDefiSeed(){const k=getDefiDateKey();let h=0;for(let i=0;i<k.length;i++)h=((h<<5)-h)+k.charCodeAt(i);return Math.abs(h);}
+function seededShuffle(arr,seed){const a=[...arr];let s=seed;for(let i=a.length-1;i>0;i--){s=(s*1664525+1013904223)&0xFFFFFFFF;const j=Math.abs(s)%(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;}
+function buildDefiQuestions(){
+  const seed=getDefiSeed();let all=[];
+  DEFI_PHASES.forEach((phase,pi)=>{seededShuffle(phase.data(),seed+pi*999).slice(0,DEFI_Q_PER_PHASE).forEach(q=>{all.push({...q,_phase:pi,_dir:phase.dir});});});
+  return all;
+}
+function renderDefiCalendar(containerId){
+  const d=loadDefi();const hist=d.history||[];
+  const container=document.getElementById(containerId);if(!container)return;
+  const last7=[];
+  for(let i=6;i>=0;i--){const day=new Date();day.setDate(day.getDate()-i);const key=`${day.getFullYear()}-${day.getMonth()+1}-${day.getDate()}`;const entry=hist.find(h=>h.date===key);last7.push({key,day:day.getDate(),entry});}
+  let html='<h4>7 derniers jours</h4><div class="defi-cal">';
+  last7.forEach(({key,day,entry})=>{
+    if(key===getDefiDateKey()&&!entry){html+=`<div class="defi-day" style="background:var(--blue-mid);color:#fff;border-color:var(--aurora-green)">${day}</div>`;}
+    else if(entry){html+=`<div class="defi-day ${entry.won?'won':'lost'}" title="${entry.score} pts">${day}</div>`;}
+    else{html+=`<div class="defi-day empty">${day}</div>`;}
+  });
+  html+='</div>';container.innerHTML=html;
+}
+function updateDefiMenuCard(){
+  const d=loadDefi();const todayKey=getDefiDateKey();
+  const todayDone=d.history&&d.history.find(h=>h.date===todayKey);
+  const badge=document.getElementById('defiDoneBadge');const streakBadge=document.getElementById('defiStreakBadge');const desc=document.getElementById('defiCardDesc');
+  if(todayDone){if(badge)badge.style.display='block';if(desc)desc.textContent=todayDone.score+' pts · '+Math.round(todayDone.pct)+'% réussite';}
+  else{if(badge)badge.style.display='none';if(desc)desc.textContent='5+5+5 questions · Nouveau défi chaque jour';}
+  const streak=d.streak||0;
+  if(streakBadge){if(streak>=2){streakBadge.style.display='block';streakBadge.textContent='🔥 '+streak+' jours';}else streakBadge.style.display='none';}
+}
+function startDefiCountdownTimer(){
+  const tick=()=>{const now=new Date(),midnight=new Date(now);midnight.setHours(24,0,0,0);const diff=midnight-now;const h=String(Math.floor(diff/3600000)).padStart(2,'0');const m=String(Math.floor((diff%3600000)/60000)).padStart(2,'0');const s=String(Math.floor((diff%60000)/1000)).padStart(2,'0');const el=document.getElementById('defiTimer');if(el)el.textContent=`${h}:${m}:${s}`;};
+  tick();return setInterval(tick,1000);
+}
+function startDefi(){
+  const todayKey=getDefiDateKey();const d=loadDefi();const todayEntry=d.history&&d.history.find(h=>h.date===todayKey);
+  const now=new Date();const dayNames=['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];const monthNames=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  const dateEl=document.getElementById('defiDateLbl');if(dateEl)dateEl.textContent=dayNames[now.getDay()]+' '+now.getDate()+' '+monthNames[now.getMonth()]+' '+now.getFullYear();
+  showScreen('defiScreen');
+  if(defiTimerInterval)clearInterval(defiTimerInterval);defiTimerInterval=startDefiCountdownTimer();
+  if(todayEntry){
+    document.getElementById('defiQuizZone').style.display='none';document.getElementById('defiPhaseLbl').style.display='none';
+    document.getElementById('defiCountdown').style.display='flex';document.getElementById('defiAlreadyDone').style.display='block';
+    renderDefiStepsDisplay(TOTAL_DEFI_Q,TOTAL_DEFI_Q,[]);renderDefiCalendar('defiHistory');return;
+  }
+  document.getElementById('defiCountdown').style.display='none';document.getElementById('defiQuizZone').style.display='block';
+  document.getElementById('defiPhaseLbl').style.display='block';document.getElementById('defiAlreadyDone').style.display='none';
+  defiState={questions:buildDefiQuestions(),qIdx:0,score:0,lives:5,errors:[],answered:false,history:[]};
+  renderDefiQuestion();
+}
+function renderDefiStepsDisplay(total,current,histArr){
+  const container=document.getElementById('defiSteps');if(!container)return;container.innerHTML='';
+  for(let i=0;i<total;i++){const step=document.createElement('div');step.className='defi-step';
+    if(i<current){if(histArr[i]===false){step.classList.add('fail');step.textContent='✗';}else{step.classList.add('done');step.textContent='✓';}}
+    else if(i===current){step.classList.add('active');step.textContent=(i+1);}
+    else{step.textContent=(i+1);}container.appendChild(step);}
+}
+function renderDefiQuestion(){
+  const st=defiState;st.answered=false;const q=st.questions[st.qIdx];const phaseIdx=q._phase;const phase=DEFI_PHASES[phaseIdx];
+  const phaseLbl=document.getElementById('defiPhaseLbl');if(phaseLbl)phaseLbl.textContent='PHASE '+(phaseIdx+1)+' — '+phase.label.toUpperCase()+' ('+(st.qIdx%DEFI_Q_PER_PHASE+1)+'/'+DEFI_Q_PER_PHASE+')';
+  renderDefiStepsDisplay(TOTAL_DEFI_Q,st.qIdx,st.history);
+  document.getElementById('defiProgressFill').style.width=Math.round(st.qIdx/TOTAL_DEFI_Q*100)+'%';
+  document.getElementById('defiScoreLbl').textContent=st.score+' pts';
+  const livesEl=document.getElementById('defiLivesDisplay');livesEl.innerHTML='';
+  for(let i=0;i<5;i++){const s=document.createElement('span');s.textContent=i<st.lives?'♥':'♡';s.style.color=i<st.lives?'var(--aurora-green)':'rgba(255,255,255,.2)';livesEl.appendChild(s);}
+  document.getElementById('defiModeLbl').textContent='🏆 '+phase.label;
+  const card=document.getElementById('defiCharCard');card.classList.remove('flip-in');void card.offsetWidth;card.classList.add('flip-in');
+  const dir=q._dir;const mainEl=document.getElementById('defiMainChar');const hintEl=document.getElementById('defiHint');const exEl=document.getElementById('defiEx');
+  mainEl.textContent=q.q;mainEl.style.fontSize=q.q.length>15?'16px':q.q.length>10?'18px':q.q.length>5?'20px':'24px';
+  hintEl.textContent=q.hint||'Que signifie ce mot ?';exEl.textContent=q.ex||'';
+  document.getElementById('defiFeedback').textContent='';document.getElementById('defiFeedback').className='feedback';
+  document.getElementById('defiNextBtn').className='next-btn';
+  const allData=phase.data();const correctAnswer=q.a;
+  const allAns=allData.map(x=>x.a);const opts=shuffle([q.a,...shuffle(allAns.filter(a=>a!==q.a)).slice(0,3)]);
+  const grid=document.getElementById('defiOptionsGrid');grid.innerHTML='';
+  opts.forEach(o=>{const b=document.createElement('button');b.className='opt';b.textContent=o;b.style.fontSize=o.length>20?'11px':o.length>10?'13px':'15px';b.onclick=()=>pickDefi(b,o,correctAnswer,dir,q);grid.appendChild(b);});
+}
+function pickDefi(btn,chosen,correct,dir,q){
+  if(defiState.answered)return;defiState.answered=true;
+  document.querySelectorAll('#defiOptionsGrid .opt').forEach(b=>{b.disabled=true;if(b.textContent===correct)b.classList.add('correct');});
+  const ok=chosen===correct;defiState.history.push(ok);const fb=document.getElementById('defiFeedback');
+  if(ok){defiState.score+=10;btn.classList.add('correct');fb.textContent=`✓ ${q.q} = ${q.a}`;fb.className='feedback good';playCorrect();}
+  else{btn.classList.add('wrong');defiState.lives--;defiState.errors.push({char:q.q,correct:q.a,hint:q.hint});fb.textContent=`✗ ${q.q} = ${q.a}`;fb.className='feedback bad';playWrong();}
+  document.getElementById('defiScoreLbl').textContent=defiState.score+' pts';
+  const livesEl=document.getElementById('defiLivesDisplay');livesEl.innerHTML='';
+  for(let i=0;i<5;i++){const s=document.createElement('span');s.textContent=i<defiState.lives?'♥':'♡';s.style.color=i<defiState.lives?'var(--aurora-green)':'rgba(255,255,255,.2)';livesEl.appendChild(s);}
+  const isLast=defiState.qIdx>=TOTAL_DEFI_Q-1;const nb=document.getElementById('defiNextBtn');
+  nb.textContent=isLast||defiState.lives<=0?'Voir les résultats →':'Question suivante →';nb.className='next-btn show';
+  speakQ(q);if(defiState.lives<=0)setTimeout(()=>endDefi(),700);
+}
+function nextDefiQuestion(){defiState.qIdx++;if(defiState.qIdx>=TOTAL_DEFI_Q||defiState.lives<=0){endDefi();return;}renderDefiQuestion();}
+function speakDefi(){if(defiState&&defiState.qIdx<defiState.questions.length)speakQ(defiState.questions[defiState.qIdx]);}
+function computeDefiStreak(defiData,wonToday){
+  const hist=defiData.history||[];let streak=wonToday?1:0;let checkDate=new Date();checkDate.setDate(checkDate.getDate()-1);
+  for(let i=0;i<60;i++){const key=`${checkDate.getFullYear()}-${checkDate.getMonth()+1}-${checkDate.getDate()}`;const entry=hist.find(h=>h.date===key);if(entry&&entry.won){streak++;checkDate.setDate(checkDate.getDate()-1);}else break;}
+  return streak;
+}
+function endDefi(){
+  const st=defiState;const maxScore=TOTAL_DEFI_Q*10;const pct=Math.round(st.score/maxScore*100);const correctCount=st.history.filter(Boolean).length;const won=pct>=50;
+  let xpGain=Math.round(st.score/2);const d=loadDefi();const streak=computeDefiStreak(d,won);
+  if(streak>=7)xpGain+=50;else if(streak>=3)xpGain+=20;if(pct>=90)xpGain+=30;else if(pct>=70)xpGain+=15;
+  const todayKey=getDefiDateKey();if(!d.history)d.history=[];d.history=d.history.filter(h=>h.date!==todayKey);
+  d.history.push({date:todayKey,score:st.score,pct,won,correct:correctCount,errors:st.errors.length});
+  d.xp=(d.xp||0)+xpGain;d.streak=streak;saveDefi(d);updateDefiMenuCard();
+  showScreen('defiResultScreen');
+  let trophy,msg,sub;
+  if(pct>=90){trophy='🏆';msg='Odlično!';sub='Parfait ! Vous dominez le défi du jour !';}
+  else if(pct>=70){trophy='🥈';msg='Dobro opravljeno!';sub='Très bien ! Encore un effort demain.';}
+  else if(pct>=50){trophy='🥉';msg='Nadaljuj!';sub='Pas mal ! Continuez la pratique.';}
+  else{trophy='❄️';msg='Vadi še!';sub='La régularité est la clé. À demain !';}
+  document.getElementById('defiTrophy').textContent=trophy;document.getElementById('defiResultMsg').textContent=msg;document.getElementById('defiResultSub').textContent=sub;
+  document.getElementById('defiFinalScore').textContent=st.score;document.getElementById('defiFinalTotal').textContent='/ '+maxScore;
+  const stars=document.getElementById('defiStarsRow').querySelectorAll('span');const numStars=pct>=90?3:pct>=60?2:pct>=30?1:0;
+  stars.forEach((s,i)=>{setTimeout(()=>{if(i<numStars)s.classList.add('lit');},300+i*200);});
+  document.getElementById('defiXpGained').textContent='+'+xpGain+' XP';document.getElementById('defiTotalXp').textContent='Total : '+d.xp+' XP';
+  setTimeout(()=>{document.getElementById('defiXpFill').style.width=Math.min(100,(xpGain/150)*100)+'%';},400);
+  const badges=[];
+  if(pct>=100)badges.push({icon:'💯',label:'Score parfait'});if(st.errors.length===0)badges.push({icon:'✨',label:'Sans faute'});
+  if(streak>=7)badges.push({icon:'🔥',label:'7 jours !'});else if(streak>=3)badges.push({icon:'🔥',label:streak+' jours'});
+  if(correctCount===TOTAL_DEFI_Q)badges.push({icon:'❄️',label:'Toutes les phases'});
+  document.getElementById('defiBadgesRow').innerHTML=badges.map((b,i)=>`<div class="defi-badge" style="animation-delay:${i*.1}s"><span class="badge-icon">${b.icon}</span>${b.label}</div>`).join('');
+  renderDefiCalendar('defiResultHistory');
+}
+
+// ── MODAL PHONÉTIQUE ────────────────────────────────────────────
+function showPhoneticModal() {
+  if(document.getElementById('phoneticModal')) return;
+  const modal = document.createElement('div');
+  modal.id = 'phoneticModal';
+  modal.style.cssText = `position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(5,15,30,.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);animation:fadeIn .2s ease`;
+  modal.innerHTML = `
+<div style="background:linear-gradient(160deg,#0d2137,#122840);border:1.5px solid rgba(26,188,156,.35);border-radius:18px;max-width:420px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.7);position:relative;padding:0">
+  <!-- En-tête -->
+  <div style="padding:16px 18px 12px;border-bottom:1px solid rgba(46,134,193,.18);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:linear-gradient(160deg,#0d2137,#122840);border-radius:18px 18px 0 0;z-index:1">
+    <div>
+      <div style="font-size:16px;font-weight:900;color:#f0f4f8;letter-spacing:.3px">🇸🇮 Guide de prononciation slovène</div>
+      <div style="font-size:11px;color:#5d8aa8;margin-top:2px">Alphabet phonétique international (API)</div>
+    </div>
+    <button onclick="closePhoneticModal()" style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:50%;width:30px;height:30px;cursor:pointer;font-size:15px;color:#f0f4f8;display:flex;align-items:center;justify-content:center;flex-shrink:0">✕</button>
+  </div>
+
+  <div style="padding:14px 18px 18px">
+
+    <!-- Voyelles -->
+    <div style="font-size:11px;font-weight:700;color:#1abc9c;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Voyelles</div>
+    <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:16px">
+      ${phoneticRow('ː','Son LONG','La voyelle ou consonne précédente est tenue deux fois plus longtemps','ex: /víːno/ → "viino" long','#52be80')}
+      ${phoneticRow('a','A','Comme "a" dans "papa" — toujours ouvert','ex: /máti/ → "mati"','#52be80')}
+      ${phoneticRow('ɛ','È','Comme "è" dans "fête" — e ouvert','ex: /médved/ → "mèdved"','#52be80')}
+      ${phoneticRow('e','É','Comme "é" dans "été" — e fermé','ex: /réka/ → "réka"','#52be80')}
+      ${phoneticRow('i','I','Comme "i" dans "ici" — toujours tendu','ex: /píti/ → "píti"','#52be80')}
+      ${phoneticRow('ɔ','O ouvert','Comme "o" dans "porte" — o ouvert','ex: /gɔzd/ → "gòzd"','#52be80')}
+      ${phoneticRow('o','O fermé','Comme "o" dans "eau" — o fermé','ex: /sóva/ → "sóva"','#52be80')}
+      ${phoneticRow('u','OU','Comme "ou" dans "loup" — toujours arrondi','ex: /vújk/ → "vóulk"','#52be80')}
+    </div>
+
+    <!-- Consonnes slovènes spécifiques -->
+    <div style="font-size:11px;font-weight:700;color:#8e44ad;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Consonnes slovènes spécifiques</div>
+    <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:16px">
+      ${phoneticRow('ʃ','CH','Comme "ch" dans "chat" — sifflant retroflexe','ex: /déš/ (dež) → "dèch"','#8e44ad')}
+      ${phoneticRow('ʒ','J','Comme "j" dans "je" — voisant de ʃ','ex: /méʒ/ (mož) → "mèje"','#8e44ad')}
+      ${phoneticRow('tʃ','TCH','Comme "tch" dans "tchèque"','ex: /tʃáːj/ (čaj) → "tchái"','#8e44ad')}
+      ${phoneticRow('ts','TS','Comme "ts" dans "tsigane" — jamais "s" !','ex: /tsvét/ (cvet) → "tsvét"','#8e44ad')}
+      ${phoneticRow('ʒʒ','DJ / DŽ','Affriquée sonore —介于 "j" et "dch"','ex: /družína/ → "droujína"','#8e44ad')}
+      ${phoneticRow('ɾ','R roulé','R roulé/alvéolaire comme en espagnol ou italien','ex: /réka/ → "réka" (roulé)','#8e44ad')}
+      ${phoneticRow('ʋ','V / W','Consonne labio-dentale — entre "v" et "ou" français','ex: /véter/ → "vétèu"','#8e44ad')}
+      ${phoneticRow('j','Y consonne','Comme "y" dans "yeux" — semi-voyelle','ex: /jútri/ → "yóutri"','#8e44ad')}
+      ${phoneticRow('x','KH','Comme la "jota" espagnole ou "kh" arabe','ex: /krúx/ (kruh) → "kroukh"','#8e44ad')}
+      ${phoneticRow('ʎ','LY','L mouillé — langue contre la voûte palatine','ex: /čévʎi/ → "tchév-li"','#8e44ad')}
+      ${phoneticRow('g','G dur','Toujours "g" dur comme "garçon" — jamais "j"','ex: /snég/ → "snèg" dur','#8e44ad')}
+    </div>
+
+    <!-- Accents & intonation -->
+    <div style="font-size:11px;font-weight:700;color:#f1c40f;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Accentuation & intonation</div>
+    <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:16px">
+      ${phoneticRow('ˈ','Accent tonique','La syllabe suivante porte l\'accent principal — très important en slovène !','ex: /ˈsló-ʋɛn-ʃkɔ/','#f1c40f')}
+      ${phoneticRow('á','Accent sur voyelle','L\'accent tombe sur la voyelle marquée — allègement du reste','ex: /máma/ → MA-ma','#f1c40f')}
+      ${phoneticRow('´','Ton montant','Le ton monte sur la voyelle accentuée','ex: /píːti/ (ton montant)','#f1c40f')}
+      ${phoneticRow('`','Ton descendant','Le ton descend sur la voyelle accentuée','ex: /písati/ (ton descendant)','#f1c40f')}
+    </div>
+
+    <!-- Astuce -->
+    <div style="background:rgba(82,190,128,.09);border:1px solid rgba(82,190,128,.25);border-radius:10px;padding:10px 12px">
+      <div style="font-size:12px;font-weight:700;color:#52be80;margin-bottom:5px">💡 Astuce clé pour le slovène</div>
+      <div style="font-size:11.5px;color:#a8c8d8;line-height:1.6">Le slovène a <b style="color:#f0f4f8">deux systèmes de sons</b> que le français n'a pas :<br>
+        • <span style="font-family:'Courier New',monospace;color:#1abc9c">c</span> se prononce <span style="font-family:'Courier New',monospace;color:#1abc9c">/ts/</span> (jamais /s/) : <em>cvet</em> → /tsvét/<br>
+        • <span style="font-family:'Courier New',monospace;color:#1abc9c">č</span> se prononce <span style="font-family:'Courier New',monospace;color:#1abc9c">/tʃ/</span> comme "tch" : <em>čaj</em> → /<span style="color:#1abc9c">tʃ</span>áj/<br>
+        • <span style="font-family:'Courier New',monospace;color:#1abc9c">š</span> se prononce <span style="font-family:'Courier New',monospace;color:#1abc9c">/ʃ/</span> comme "ch" : <em>šola</em> → /<span style="color:#1abc9c">ʃ</span>óla/<br>
+        • <span style="font-family:'Courier New',monospace;color:#1abc9c">ž</span> se prononce <span style="font-family:'Courier New',monospace;color:#1abc9c">/ʒ/</span> comme "j" : <em>dež</em> → /dé<span style="color:#1abc9c">ʃ</span>/ (avec h aspiré)</div>
+    </div>
+  </div>
+</div>`;
+  document.body.appendChild(modal);
+  modal.addEventListener('click', e => { if(e.target===modal) closePhoneticModal(); });
+}
+
+function phoneticRow(symbol, name, desc, example, color) {
+  return `<div style="display:flex;align-items:flex-start;gap:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:9px 11px">
+    <div style="flex-shrink:0;width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,.06);border:1.5px solid ${color}44;display:flex;align-items:center;justify-content:center;font-family:'Courier New',monospace;font-size:18px;font-weight:700;color:${color}">${symbol}</div>
+    <div style="min-width:0">
+      <div style="font-size:13px;font-weight:700;color:#f0f4f8">${name}</div>
+      <div style="font-size:11px;color:#8aaabb;line-height:1.4;margin-top:2px">${desc}</div>
+      <div style="font-size:10.5px;color:#5d8aa8;font-family:'Courier New',monospace;margin-top:3px">${example}</div>
+    </div>
+  </div>`;
+}
+
+function closePhoneticModal() {
+  const m = document.getElementById('phoneticModal');
+  if(m) { m.style.animation='none'; m.style.opacity=0; m.style.transition='opacity .15s'; setTimeout(()=>m.remove(),150); }
+}
+
+function showPhoneticHelp() { showPhoneticModal(); }
+
+// ── FLOCONS DE NEIGE ─────────────────────────────────────────────
+(function(){
+  const c=document.getElementById('snowflakes');
+  const flakes=['❄','❅','❆','·','*','•'];
+  for(let i=0;i<30;i++){
+    const p=document.createElement('div');p.className='snowflake';
+    const sz=8+Math.random()*14,left=Math.random()*100,delay=Math.random()*16,dur=10+Math.random()*14;
+    p.textContent=flakes[Math.floor(Math.random()*flakes.length)];
+    p.style.cssText=`left:${left}%;font-size:${sz}px;animation-duration:${dur}s;animation-delay:${delay}s;opacity:0`;
+    c.appendChild(p);
+  }
+})();
+
+updateMenuStats();
+updateDefiMenuCard();
+
+// ── PAYSAGE FIXE ─────────────────────────────────────────────────
+(function(){
+  var menuL=document.querySelector('#menuScreen .menu-landscape');
+  if(!menuL)return;
+  // Clone pour le mettre en arrière-plan en bas, toujours visible
+  var fixed=document.createElement('div');
+  fixed.id='fixedLandscape';
+  // Le SVG a un viewBox de 500x220 — on couvre toute la hauteur en arrière-plan
+  fixed.style.cssText='position:fixed;top:0;bottom:0;left:0;right:0;max-width:500px;margin:0 auto;z-index:0;pointer-events:none;background:transparent';
+  fixed.innerHTML=menuL.innerHTML;
+  // Sur le clone fixed, on rend le fond de ciel TRANSPARENT pour garder montagnes/lac
+  var skyStop=fixed.querySelector('#lSky stop[offset="100%"]');
+  if(skyStop){skyStop.setAttribute('stop-color','transparent');skyStop.setAttribute('stop-opacity','0');}
+  // On rend les rect de fond du SVG transparents aussi
+  var bgRect=fixed.querySelector('rect[fill="url(#lSky)"]');
+  if(bgRect)bgRect.setAttribute('fill','transparent');
+
+  document.body.appendChild(fixed);
+  // Rendre le menu-landscape original invisible et sans hauteur
+  menuL.style.display='none';
+  // Sur desktop, élargir
+  if(window.innerWidth>=520){fixed.style.maxWidth='none';}
+  window.addEventListener('resize',function(){
+    if(window.innerWidth>=520){fixed.style.maxWidth='none';}
+    else{fixed.style.maxWidth='500px';}
+  });
+  // Remonter .game pour qu'il soit au-dessus du paysage (z-index plus haut)
+  var gameEl=document.querySelector('.game');
+  if(gameEl)gameEl.style.position='relative';
+})();
+
+// PWA Service Worker (désactivé en mode fichier local)
+// navigator.serviceWorker non disponible sans serveur HTTP
+
+// ══════════════════════════════════════════════════════════
+// TRADUCTEUR FR ↔ SL
+// ══════════════════════════════════════════════════════════
+
+var _tradLang = 'fr2sl'; // direction courante
+var _tradRecog = null;   // instance SpeechRecognition
+var _tradRecording = false;
+
+// Suggestions selon la direction
+var _tradSuggestions = {
+  fr2sl: ['Bonjour !','Comment allez-vous ?','Je ne comprends pas.','Où est la gare ?','Combien ça coûte ?','Merci beaucoup !'],
+  sl2fr: ['Dober dan!','Kako si?','Ne razumem.','Kje je postaja?','Koliko stane?','Hvala lepa!']
+};
+
+function showTranslator(){
+  showScreen('translatorScreen');
+  _renderTradSuggestions();
+}
+
+function _renderTradSuggestions(){
+  var el = document.getElementById('tradSuggestions');
+  if(!el) return;
+  var suggs = _tradSuggestions[_tradLang] || [];
+  el.innerHTML = suggs.map(function(s){
+    return '<button class="trad-action-btn" style="font-size:11px" onclick="useTradSuggestion(\''+s.replace(/'/g,"\\'")+'\')">' + s + '</button>';
+  }).join('');
+}
+
+function useTradSuggestion(txt){
+  document.getElementById('tradInput').value = txt;
+  onTradInput();
+  doTranslate();
+}
+
+function swapTradLang(){
+  // Inverser la direction
+  _tradLang = _tradLang === 'fr2sl' ? 'sl2fr' : 'fr2sl';
+  var isFr2sl = _tradLang === 'fr2sl';
+  document.getElementById('tradSrcLabel').textContent  = isFr2sl ? '🇫🇷 Français' : '🇸🇮 Slovène';
+  document.getElementById('tradDstLabel').textContent  = isFr2sl ? '🇸🇮 Slovène'  : '🇫🇷 Français';
+  // Remettre le résultat dans l'input si on a déjà traduit
+  var res = document.getElementById('tradResult').textContent;
+  var inp = document.getElementById('tradInput').value;
+  if(res){
+    document.getElementById('tradInput').value = res;
+    _clearTradResult();
+  }
+  onTradInput();
+  _renderTradSuggestions();
+}
+
+function onTradInput(){
+  var val = document.getElementById('tradInput').value.trim();
+  document.getElementById('tradBtn').disabled = !val;
+}
+
+function clearTradInput(){
+  document.getElementById('tradInput').value = '';
+  _clearTradResult();
+  document.getElementById('tradBtn').disabled = true;
+}
+
+function _clearTradResult(){
+  document.getElementById('tradResult').style.display = 'none';
+  document.getElementById('tradResult').textContent = '';
+  document.getElementById('tradResultHint').style.display = 'none';
+  document.getElementById('tradResultHint').textContent = '';
+  document.getElementById('tradResultActions').style.display = 'none';
+  document.getElementById('tradPlaceholder').style.display = 'block';
+}
+
+async function doTranslate(){
+  var text = document.getElementById('tradInput').value.trim();
+  if(!text) return;
+
+  var isFr2sl = _tradLang === 'fr2sl';
+  var srcLang  = isFr2sl ? 'fr' : 'sl';
+  var dstLang  = isFr2sl ? 'sl' : 'fr';
+
+  // UI loading
+  var btn = document.getElementById('tradBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner" style="width:14px;height:14px;border-width:2px"></span><span>Traduction…</span>';
+  document.getElementById('tradPlaceholder').textContent = '⏳ Traduction en cours…';
+  _clearTradResult();
+  document.getElementById('tradPlaceholder').style.display = 'block';
+  document.getElementById('tradPlaceholder').textContent = '⏳ Traduction en cours…';
+
+  try {
+    // Google Translate API gratuite (pas de clé requise)
+    var url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl='
+      + srcLang + '&tl=' + dstLang + '&dt=t&dt=rm&q=' + encodeURIComponent(text);
+
+    var resp = await fetch(url);
+    if(!resp.ok) throw new Error('HTTP ' + resp.status);
+    var data = await resp.json();
+
+    // Parser la réponse Google Translate
+    var translated = '';
+    var romanized  = '';
+    if(data[0]) {
+      data[0].forEach(function(chunk){ if(chunk[0]) translated += chunk[0]; });
+    }
+    // Romanisation (translittération) — présente dans data[0][i][3] ou data[1]
+    if(data[0]) {
+      data[0].forEach(function(chunk){ if(chunk[3]) romanized += chunk[3]; });
+    }
+
+    // Afficher
+    document.getElementById('tradPlaceholder').style.display = 'none';
+    document.getElementById('tradResult').textContent = translated;
+    document.getElementById('tradResult').style.display = 'block';
+    if(romanized && romanized !== translated){
+      document.getElementById('tradResultHint').textContent = '/' + romanized + '/';
+      document.getElementById('tradResultHint').style.display = 'block';
+    }
+    document.getElementById('tradResultActions').style.display = 'flex';
+
+    // Auto-prononcer le résultat si c'est du slovène
+    if(dstLang === 'sl') setTimeout(function(){ speak(translated); }, 300);
+
+  } catch(e) {
+    document.getElementById('tradPlaceholder').style.display = 'block';
+    document.getElementById('tradPlaceholder').textContent = '⚠️ Erreur de traduction. Vérifiez votre connexion.';
+    console.error('Translate error:', e);
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '<span>🌐</span><span>Traduire</span>';
+}
+
+function speakTrad(which){
+  var isFr2sl = _tradLang === 'fr2sl';
+  if(which === 'input'){
+    var txt = document.getElementById('tradInput').value.trim();
+    if(!txt) return;
+    var lang = isFr2sl ? 'fr' : 'sl';
+    if(lang === 'sl') speak(txt);
+    else _speakFr(txt);
+  } else {
+    var out = document.getElementById('tradResult').textContent;
+    if(!out) return;
+    var outLang = isFr2sl ? 'sl' : 'fr';
+    if(outLang === 'sl') speak(out);
+    else _speakFr(out);
+  }
+}
+
+function _speakFr(txt){
+  if(!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  var u = new SpeechSynthesisUtterance(txt);
+  u.lang = 'fr-FR';
+  u.rate = 0.9;
+  var voices = speechSynthesis.getVoices();
+  var frVoice = voices.find(function(v){ return v.lang && v.lang.startsWith('fr'); });
+  if(frVoice) u.voice = frVoice;
+  speechSynthesis.speak(u);
+}
+
+function copyTradResult(){
+  var txt = document.getElementById('tradResult').textContent;
+  if(!txt) return;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(txt).then(function(){
+      var btn = event.target;
+      var orig = btn.textContent;
+      btn.textContent = '✓ Copié !';
+      setTimeout(function(){ btn.textContent = orig; }, 1500);
+    });
+  } else {
+    // Fallback
+    var ta = document.createElement('textarea');
+    ta.value = txt; document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+}
+
+// ── DICTÉE VOCALE (SpeechRecognition) ────────────────────
+function toggleTradMic(){
+  if(_tradRecording){ _stopTradMic(); return; }
+  _startTradMic();
+}
+
+function _startTradMic(){
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SR){
+    alert('La reconnaissance vocale n\'est pas disponible sur ce navigateur. Utilisez Chrome ou Edge.');
+    return;
+  }
+  var isFr2sl = _tradLang === 'fr2sl';
+  _tradRecog = new SR();
+  _tradRecog.lang = isFr2sl ? 'fr-FR' : 'sl-SI';
+  _tradRecog.continuous = false;
+  _tradRecog.interimResults = true;
+
+  var btn = document.getElementById('tradMicBtn');
+  btn.classList.add('recording');
+  btn.textContent = '⏹ Arrêter';
+  _tradRecording = true;
+
+  _tradRecog.onresult = function(e){
+    var transcript = '';
+    for(var i = e.resultIndex; i < e.results.length; i++){
+      transcript += e.results[i][0].transcript;
+    }
+    document.getElementById('tradInput').value = transcript;
+    onTradInput();
+  };
+
+  _tradRecog.onend = function(){
+    _stopTradMic();
+    // Auto-traduire après dictée
+    var val = document.getElementById('tradInput').value.trim();
+    if(val) doTranslate();
+  };
+
+  _tradRecog.onerror = function(e){
+    console.error('Speech error:', e.error);
+    _stopTradMic();
+  };
+
+  _tradRecog.start();
+}
+
+function _stopTradMic(){
+  if(_tradRecog){ try{ _tradRecog.stop(); }catch(e){} _tradRecog = null; }
+  _tradRecording = false;
+  var btn = document.getElementById('tradMicBtn');
+  if(btn){ btn.classList.remove('recording'); btn.textContent = '🎤 Dicter'; }
+}
+
+// ══════════════════════════════════════════════════════════
+// MODE APPRENDRE — Exploration par catégorie
+// ══════════════════════════════════════════════════════════
+
+let _learnCat = '';
+let _learnDir = 'sl'; // 'sl' = slovène affiché, clic → FR ; 'fr' = français affiché, clic → SL
+let _learnRevealTimer = null;
+
+// Icônes par mot (extraits de la champ `a` qui contient déjà l'emoji)
+function _learnGetEmoji(item) {
+  // Le champ `a` commence souvent par un emoji, ex: "🌊 rivière"
+  const match = item.a.match(/^(\p{Emoji_Presentation}|\p{Extended_Pictographic})/u);
+  return match ? match[0] : '📖';
+}
+
+function _learnGetFrText(item) {
+  // Retire l'emoji du début de `a`
+  return item.a.replace(/^[\u{1F000}-\u{1FFFF}\u{2600}-\u{27FF}\u{2700}-\u{27BF}][\uFE0F]?\s*/u, '').trim();
+}
+
+function startLearn(cat) {
+  _learnCat = cat || _pendingCat;
+  const catEmojis = {'Nature':'🌿','Animaux':'🐾','Temps':'🗓️','Nourriture':'🍽️','Famille':'👨‍👩‍👧','Lieux':'🏙️','Couleurs':'🎨','Chiffres':'🔢','Émotions':'😀','Vêtements':'👗','Expressions':'💬','Présentations':'🙋','Communication':'🗣️','Verbes':'🔤'};
+  const emoji = catEmojis[_learnCat] || '📂';
+  document.getElementById('learnCatTitle').textContent = emoji + ' ' + _learnCat;
+  showScreen('learnDirScreen');
+}
+
+function startLearnMode(dir) {
+  _learnDir = dir;
+  _renderLearnScreen();
+  showScreen('learnScreen');
+}
+
+function _renderLearnScreen() {
+  const catEmojis = {'Nature':'🌿','Animaux':'🐾','Temps':'🗓️','Nourriture':'🍽️','Famille':'👨‍👩‍👧','Lieux':'🏙️','Couleurs':'🎨','Chiffres':'🔢','Émotions':'😀','Vêtements':'👗','Expressions':'💬','Présentations':'🙋','Communication':'🗣️','Verbes':'🔤'};
+  const items = VOCAB.filter(v => v.cat === _learnCat);
+  const emoji = catEmojis[_learnCat] || '📂';
+  const dir = _learnDir;
+
+  document.getElementById('learnScreenTitle').textContent = emoji + ' ' + _learnCat;
+  document.getElementById('learnDirLabel').textContent = dir === 'sl'
+    ? '🇸🇮 Slovène → clique pour voir en français'
+    : '🇫🇷 Français → clique pour voir en slovène';
+
+  const grid = document.getElementById('learnGrid');
+  grid.innerHTML = '';
+
+  items.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'learn-card';
+    card.dataset.idx = idx;
+
+    const emojiChar = _learnGetEmoji(item);
+    const frText = _learnGetFrText(item);
+    const slText = item.q;
+
+    if (dir === 'sl') {
+      // Affiche le mot slovène, clic révèle le français
+      card.innerHTML = `
+        <div class="learn-card-emoji">${emojiChar}</div>
+        <div class="learn-card-main">${slText}</div>
+        <div class="learn-card-reveal" style="opacity:0;transition:opacity .2s">${frText}</div>
+        <button class="learn-speak-btn" onclick="event.stopPropagation();speak('${slText.replace(/'/g,"\\'")}')">🔊</button>
+      `;
+    } else {
+      // Affiche le français, clic révèle le slovène
+      card.innerHTML = `
+        <div class="learn-card-emoji">${emojiChar}</div>
+        <div class="learn-card-main">${frText}</div>
+        <div class="learn-card-reveal" style="opacity:0;transition:opacity .2s">${slText}</div>
+        <button class="learn-speak-btn" onclick="event.stopPropagation();speak('${slText.replace(/'/g,"\\'")}')">🔊</button>
+      `;
+    }
+
+    card.addEventListener('click', function(e) {
+      if (e.target.classList.contains('learn-speak-btn')) return;
+      _learnRevealWord(card, dir, slText);
+    });
+
+    grid.appendChild(card);
+  });
+}
+
+function _learnRevealWord(card, dir, slText) {
+  const reveal = card.querySelector('.learn-card-reveal');
+  if (!reveal) return;
+
+  // Jouer le son slovène au clic
+  speak(slText);
+
+  // Afficher la traduction
+  reveal.style.opacity = '1';
+  card.classList.add('learn-card-revealed');
+
+  // Masquer après 2 secondes
+  clearTimeout(_learnRevealTimer);
+  setTimeout(function() {
+    reveal.style.opacity = '0';
+    card.classList.remove('learn-card-revealed');
+  }, 2000);
+}
+
+</script>
+</body>
+</html>
